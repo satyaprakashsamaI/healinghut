@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Healing Hut - Mental Quiz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #f9f4ff, #e8d6ff);
+      color: #2B003E;
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Navbar Styles */
+    .navbar {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 1200px;
+      padding: 15px 30px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(107, 13, 173, 0.1);
+    }
+    
+    .brand a {
+      text-decoration: none;
+    }
+    
+    .brand h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: #6A0DAD;
+      font-weight: 700;
+    }
+    
+    .brand p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #2B003E;
+    }
+    
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+    
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 600;
+      color: #2B003E;
+      transition: color 0.3s ease;
+      font-size: 1rem;
+      position: relative;
+      padding: 5px 0;
+    }
+    
+    .nav-links a:hover {
+      color: #6A0DAD;
+    }
+    
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #6A0DAD;
+      transition: width 0.3s ease;
+    }
+    
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+    
+    .cta {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 12px;
+      background: #6A0DAD;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .cta:hover {
+      background: #5a4cbd;
+      transform: translateY(-3px);
+      box-shadow: 0 4px 15px rgba(107, 13, 173, 0.3);
+    }
+    
+    /* Quiz Container */
+    .quiz-container {
+      max-width: 800px;
+      margin: 140px auto 40px;
+      padding: 0 30px;
+      flex: 1;
+    }
+    
+    .quiz-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .quiz-header h1 {
+      font-size: 3rem;
+      color: #2B003E;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+    
+    .powered-by {
+      font-size: 1.4rem;
+      color: #6A0DAD;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    
+    .powered-by span {
+      color: #000;
+      font-weight: 700;
+    }
+    
+    .quiz-header p {
+      font-size: 1.2rem;
+      color: #5a4cbd;
+      max-width: 700px;
+      margin: 0 auto;
+      font-weight: 400;
+    }
+    
+    /* Instructions Widget */
+    .instructions-widget {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(107, 13, 173, 0.15);
+      margin-bottom: 40px;
+    }
+    
+    .instructions-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+    
+    .instructions-header i {
+      font-size: 2.5rem;
+      color: #6A0DAD;
+    }
+    
+    .instructions-header h2 {
+      font-size: 2rem;
+      color: #2B003E;
+    }
+    
+    .instruction-points {
+      padding-left: 30px;
+      margin-bottom: 30px;
+    }
+    
+    .point {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+      align-items: flex-start;
+    }
+    
+    .point i {
+      color: #6A0DAD;
+      font-size: 1.2rem;
+      margin-top: 5px;
+    }
+    
+    .point p {
+      font-size: 1.1rem;
+      color: #2B003E;
+    }
+    
+    .start-quiz-btn {
+      width: 100%;
+      padding: 18px;
+      background: #6A0DAD;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .start-quiz-btn:hover {
+      background: #5a4cbd;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(107, 13, 173, 0.3);
+    }
+    
+    /* Quiz Question */
+    .quiz-question {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(107, 13, 173, 0.15);
+      margin-bottom: 30px;
+      display: none;
+    }
+    
+    .question-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+    
+    .question-header i {
+      font-size: 2.5rem;
+      color: #6A0DAD;
+    }
+    
+    .question-header h2 {
+      font-size: 2rem;
+      color: #2B003E;
+    }
+    
+    .question-text {
+      font-size: 1.4rem;
+      color: #2B003E;
+      margin-bottom: 30px;
+      font-weight: 500;
+    }
+    
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    
+    @media (max-width: 600px) {
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .option-btn {
+      background: #f9f4ff;
+      border-radius: 15px;
+      padding: 25px 15px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    
+    .option-btn:hover {
+      background: #f0e5ff;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(107, 13, 173, 0.15);
+    }
+    
+    .option-btn.selected {
+      border-color: #6A0DAD;
+      background: #f0e5ff;
+      box-shadow: 0 5px 15px rgba(107, 13, 173, 0.2);
+    }
+    
+    .navigation-btns {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    
+    .nav-btn {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .nav-btn.prev {
+      background: #f0e5ff;
+      color: #6A0DAD;
+    }
+    
+    .nav-btn.next {
+      background: #6A0DAD;
+      color: white;
+    }
+    
+    .nav-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(107, 13, 173, 0.2);
+    }
+    
+    /* AI Analysis */
+    .ai-analysis {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(107, 13, 173, 0.15);
+      margin-bottom: 50px;
+      display: none;
+    }
+    
+    .ai-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+    
+    .ai-header i {
+      font-size: 2.5rem;
+      color: #6A0DAD;
+    }
+    
+    .ai-header h2 {
+      font-size: 2rem;
+      color: #2B003E;
+    }
+    
+    .ai-content {
+      background: #f9f4ff;
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 20px;
+      position: relative;
+      min-height: 200px;
+    }
+    
+    .ai-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 200px;
+    }
+    
+    .sparkle-container {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      margin-bottom: 20px;
+    }
+    
+    .sparkle {
+      position: absolute;
+      font-size: 2rem;
+      color: #6A0DAD;
+      animation: sparkle 1s infinite;
+    }
+    
+    .sparkle:nth-child(1) { top: 20%; left: 30%; animation-delay: 0s; }
+    .sparkle:nth-child(2) { top: 40%; left: 70%; animation-delay: 0.2s; }
+    .sparkle:nth-child(3) { top: 70%; left: 20%; animation-delay: 0.4s; }
+    .sparkle:nth-child(4) { top: 60%; left: 60%; animation-delay: 0.6s; }
+    
+    @keyframes sparkle {
+      0% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1.2); }
+      100% { opacity: 0; transform: scale(0.5); }
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    
+    /* Buffering Animation */
+    .buffering {
+      display: flex;
+      justify-content: center;
+      margin: 15px 0;
+      gap: 8px;
+    }
+    
+    .buffering-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #6A0DAD;
+      opacity: 0.7;
+      animation: buffering 1.4s infinite ease-in-out;
+    }
+    
+    .buffering-dot:nth-child(1) { animation-delay: -0.32s; }
+    .buffering-dot:nth-child(2) { animation-delay: -0.16s; }
+    
+    @keyframes buffering {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+    
+    .ai-insight {
+      margin-bottom: 25px;
+    }
+    
+    .insight-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+    
+    .insight-header i {
+      color: #6A0DAD;
+      font-size: 1.4rem;
+    }
+    
+    .insight-header h3 {
+      font-size: 1.4rem;
+      color: #6A0DAD;
+    }
+    
+    .insight-content {
+      line-height: 1.7;
+    }
+    
+    .typewriter-text {
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 2px solid #6A0DAD;
+      animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+    }
+    
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    
+    @keyframes blink-caret {
+      from, to { border-color: transparent; }
+      50% { border-color: #6A0DAD; }
+    }
+    
+    .result-display {
+      text-align: center;
+      margin: 40px 0;
+      padding: 25px;
+      background: #f0e5ff;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .result-icon {
+      font-size: 5rem;
+      margin-bottom: 20px;
+      animation: pulse 2s infinite;
+    }
+    
+    .result-label {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #2B003E;
+      margin-bottom: 10px;
+    }
+    
+    .result-score {
+      font-size: 1.5rem;
+      color: #6A0DAD;
+      font-weight: 600;
+    }
+    
+    .result-description {
+      font-size: 1.2rem;
+      margin-top: 20px;
+      max-width: 600px;
+      line-height: 1.7;
+    }
+    
+    .ai-actions {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+      justify-content: center;
+    }
+    
+    .ai-btn {
+      padding: 15px 25px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .ai-btn.primary {
+      background: #6A0DAD;
+      color: white;
+    }
+    
+    .ai-btn.secondary {
+      background: #f0e5ff;
+      color: #6A0DAD;
+    }
+    
+    .ai-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(107, 13, 173, 0.2);
+    }
+    
+    /* Progress Bar */
+    .progress-container {
+      width: 100%;
+      height: 12px;
+      background: #f0e5ff;
+      border-radius: 10px;
+      margin: 30px 0;
+      overflow: hidden;
+    }
+    
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #6A0DAD, #5a4cbd);
+      border-radius: 10px;
+      transition: width 0.5s ease;
+    }
+    
+    /* Updated Footer - Square Corners */
+    .footer {
+      background: linear-gradient(135deg, #2B003E, #1a0029);
+      color: white;
+      padding: 70px 20px 40px;
+      text-align: center;
+      border-radius: 0;
+      margin-top: auto;
+    }
+    
+    .footer-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .footer-logo {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .footer-logo i {
+      color: #F7E8FF;
+    }
+    
+    .footer-tagline {
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+      max-width: 500px;
+      opacity: 0.9;
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+    
+    .footer-links a {
+      color: #F7E8FF;
+      text-decoration: none;
+      transition: color 0.3s;
+      font-weight: 500;
+      position: relative;
+      padding-bottom: 5px;
+    }
+    
+    .footer-links a:hover {
+      color: white;
+    }
+    
+    .footer-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: white;
+      transition: width 0.3s ease;
+    }
+    
+    .footer-links a:hover::after {
+      width: 100%;
+    }
+    
+    .copyright {
+      font-size: 0.95rem;
+      color: #A88CC7;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(168, 140, 199, 0.3);
+      width: 100%;
+      max-width: 600px;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 1100px) {
+      .navbar {
+        width: 95%;
+        padding: 12px 20px;
+      }
+      
+      .nav-links {
+        gap: 20px;
+      }
+    }
+    
+    @media (max-width: 900px) {
+      .navbar {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .quiz-header h1 {
+        font-size: 2.5rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .quiz-header h1 {
+        font-size: 2rem;
+      }
+      
+      .powered-by {
+        font-size: 1.2rem;
+      }
+      
+      .quiz-header p {
+        font-size: 1.1rem;
+      }
+      
+      .instructions-header h2, .question-header h2, .ai-header h2 {
+        font-size: 1.6rem;
+      }
+      
+      .instructions-widget, .quiz-question, .ai-analysis {
+        padding: 25px;
+      }
+      
+      .question-text {
+        font-size: 1.2rem;
+      }
+      
+      .result-icon {
+        font-size: 4rem;
+      }
+      
+      .result-label {
+        font-size: 1.8rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .quiz-container {
+        margin-top: 160px;
+        padding: 0 15px;
+      }
+      
+      .quiz-header h1 {
+        font-size: 1.8rem;
+      }
+      
+      .ai-content {
+        padding: 15px;
+      }
+      
+      .ai-actions {
+        flex-direction: column;
+      }
+      
+      .ai-btn {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .result-icon {
+        font-size: 3rem;
+      }
+      
+      .result-label {
+        font-size: 1.5rem;
+      }
+      
+      .result-score {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="brand">
+      <a href="index.html">
+        <h1>Healing Hut</h1>
+        <p>Healing is for everyone.</p>
+      </a>
+    </div>
+    <div class="nav-links">
+      <a href="mood.html">Mood Tracker</a>
+      <a href="quiz.html" class="active">Mental Quiz</a>
+      <a href="index.html#partners">Our Partners</a>
+      <a href="index.html#testimonials">Testimonials</a>
+      <a href="index.html#contact">Contact Us</a>
+    </div>
+    <a href="session.html" class="cta">Book a Therapy!</a>
+  </nav>
+
+  <!-- Quiz Container -->
+  <div class="quiz-container">
+    <div class="quiz-header">
+      <h1>AI-Powered Mental Quiz</h1>
+      <p class="powered-by">Powered by <span>Heal.AI</span></p>
+      <p>Smart, science-backed testing for clearer mental health insights.</p>
+    </div>
+
+    <!-- Instructions Widget -->
+    <div class="instructions-widget" id="instructionsWidget">
+      <div class="instructions-header">
+        <i class="fas fa-clipboard-list"></i>
+        <h2>Quiz Instructions</h2>
+      </div>
+      
+      <div class="instruction-points">
+        <div class="point">
+          <i class="fas fa-check-circle"></i>
+          <p>You'll be asked 5 short questions about your recent mood.</p>
+        </div>
+        <div class="point">
+          <i class="fas fa-check-circle"></i>
+          <p>Choose the option that best describes how you've felt in the past week.</p>
+        </div>
+        <div class="point">
+          <i class="fas fa-check-circle"></i>
+          <p>Your answers are private and used only for self-awareness.</p>
+        </div>
+        <div class="point">
+          <i class="fas fa-check-circle"></i>
+          <p>At the end, you'll receive an insight and a recommendation, powered by Heal.AI.</p>
+        </div>
+      </div>
+      
+      <button class="start-quiz-btn" id="startQuizBtn">
+        <i class="fas fa-play-circle"></i> Start Quiz
+      </button>
+    </div>
+
+    <!-- Quiz Questions -->
+    <div class="quiz-question" id="question1">
+      <div class="progress-container">
+        <div class="progress-bar" style="width: 20%"></div>
+      </div>
+      
+      <div class="question-header">
+        <i class="fas fa-question-circle"></i>
+        <h2>Question 1 of 5</h2>
+      </div>
+      
+      <div class="question-text">
+        How often have you felt down, depressed, or hopeless?
+      </div>
+      
+      <div class="options-grid">
+        <div class="option-btn" data-value="0">
+          Never
+        </div>
+        <div class="option-btn" data-value="1">
+          Sometimes
+        </div>
+        <div class="option-btn" data-value="2">
+          Often
+        </div>
+        <div class="option-btn" data-value="3">
+          Always
+        </div>
+      </div>
+      
+      <div class="navigation-btns">
+        <button class="nav-btn prev" disabled>
+          <i class="fas fa-arrow-left"></i> Previous
+        </button>
+        <button class="nav-btn next">
+          Next <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="quiz-question" id="question2">
+      <div class="progress-container">
+        <div class="progress-bar" style="width: 40%"></div>
+      </div>
+      
+      <div class="question-header">
+        <i class="fas fa-question-circle"></i>
+        <h2>Question 2 of 5</h2>
+      </div>
+      
+      <div class="question-text">
+        How often have you felt anxious or on edge?
+      </div>
+      
+      <div class="options-grid">
+        <div class="option-btn" data-value="0">
+          Never
+        </div>
+        <div class="option-btn" data-value="1">
+          Sometimes
+        </div>
+        <div class="option-btn" data-value="2">
+          Often
+        </div>
+        <div class="option-btn" data-value="3">
+          Always
+        </div>
+      </div>
+      
+      <div class="navigation-btns">
+        <button class="nav-btn prev">
+          <i class="fas fa-arrow-left"></i> Previous
+        </button>
+        <button class="nav-btn next">
+          Next <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="quiz-question" id="question3">
+      <div class="progress-container">
+        <div class="progress-bar" style="width: 60%"></div>
+      </div>
+      
+      <div class="question-header">
+        <i class="fas fa-question-circle"></i>
+        <h2>Question 3 of 5</h2>
+      </div>
+      
+      <div class="question-text">
+        How often have you had trouble sleeping (falling or staying asleep)?
+      </div>
+      
+      <div class="options-grid">
+        <div class="option-btn" data-value="0">
+          Never
+        </div>
+        <div class="option-btn" data-value="1">
+          Sometimes
+        </div>
+        <div class="option-btn" data-value="2">
+          Often
+        </div>
+        <div class="option-btn" data-value="3">
+          Always
+        </div>
+      </div>
+      
+      <div class="navigation-btns">
+        <button class="nav-btn prev">
+          <i class="fas fa-arrow-left"></i> Previous
+        </button>
+        <button class="nav-btn next">
+          Next <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="quiz-question" id="question4">
+      <div class="progress-container">
+        <div class="progress-bar" style="width: 80%"></div>
+      </div>
+      
+      <div class="question-header">
+        <i class="fas fa-question-circle"></i>
+        <h2>Question 4 of 5</h2>
+      </div>
+      
+      <div class="question-text">
+        How often have you felt tired or low on energy, even after rest?
+      </div>
+      
+      <div class="options-grid">
+        <div class="option-btn" data-value="0">
+          Never
+        </div>
+        <div class="option-btn" data-value="1">
+          Sometimes
+        </div>
+        <div class="option-btn" data-value="2">
+          Often
+        </div>
+        <div class="option-btn" data-value="3">
+          Always
+        </div>
+      </div>
+      
+      <div class="navigation-btns">
+        <button class="nav-btn prev">
+          <i class="fas fa-arrow-left"></i> Previous
+        </button>
+        <button class="nav-btn next">
+          Next <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="quiz-question" id="question5">
+      <div class="progress-container">
+        <div class="progress-bar" style="width: 100%"></div>
+      </div>
+      
+      <div class="question-header">
+        <i class="fas fa-question-circle"></i>
+        <h2>Question 5 of 5</h2>
+      </div>
+      
+      <div class="question-text">
+        How often have you found it hard to concentrate or focus?
+      </div>
+      
+      <div class="options-grid">
+        <div class="option-btn" data-value="0">
+          Never
+        </div>
+        <div class="option-btn" data-value="1">
+          Sometimes
+        </div>
+        <div class="option-btn" data-value="2">
+          Often
+        </div>
+        <div class="option-btn" data-value="3">
+          Always
+        </div>
+      </div>
+      
+      <div class="navigation-btns">
+        <button class="nav-btn prev">
+          <i class="fas fa-arrow-left"></i> Previous
+        </button>
+        <button class="nav-btn next" id="submitQuizBtn">
+          Submit <i class="fas fa-check-circle"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- AI Analysis -->
+    <div class="ai-analysis" id="aiAnalysis">
+      <div class="ai-header">
+        <i class="fas fa-robot"></i>
+        <h2>AI Mental Health Analysis</h2>
+      </div>
+      
+      <div class="ai-content" id="aiContent">
+        <div class="ai-loading">
+          <div class="sparkle-container">
+            <i class="fas fa-sparkle sparkle"></i>
+            <i class="fas fa-sparkle sparkle"></i>
+            <i class="fas fa-sparkle sparkle"></i>
+            <i class="fas fa-sparkle sparkle"></i>
+          </div>
+          <div class="buffering">
+            <div class="buffering-dot"></div>
+            <div class="buffering-dot"></div>
+            <div class="buffering-dot"></div>
+          </div>
+          <p>Please wait while we prepare your personalised self-assessment, powered by Heal.AI 🧠</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Footer - End of Page -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <i class="fas fa-spa"></i>
+        Healing Hut
+      </div>
+      <p class="footer-tagline">Healing is for everyone | Making mental wellness accessible to everyone and everywhere.</p>
+      
+      <div class="footer-links">
+        <a href="mood.html">Mood Tracker</a>
+        <a href="quiz.html" class="active">Mental Quiz</a>
+        <a href="index.html#partners">Our Partners</a>
+        <a href="index.html#testimonials">Testimonials</a>
+        <a href="index.html#contact">Contact Us</a>
+      </div>
+      
+      <div class="copyright">
+        &copy; 2025 Healing Hut. All rights reserved. | Privacy Policy | Terms of Service
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Quiz data
+    const questions = [
+      "How often have you felt down, depressed, or hopeless?",
+      "How often have you felt anxious or on edge?",
+      "How often have you had trouble sleeping (falling or staying asleep)?",
+      "How often have you felt tired or low on energy, even after rest?",
+      "How often have you found it hard to concentrate or focus?"
+    ];
+    
+    const options = [
+      { text: "Never", value: 0 },
+      { text: "Sometimes", value: 1 },
+      { text: "Often", value: 2 },
+      { text: "Always", value: 3 }
+    ];
+    
+    // User answers
+    let answers = [null, null, null, null, null];
+    let currentQuestion = 0;
+    
+    // DOM elements
+    const startQuizBtn = document.getElementById('startQuizBtn');
+    const submitQuizBtn = document.getElementById('submitQuizBtn');
+    const aiAnalysis = document.getElementById('aiAnalysis');
+    const aiContent = document.getElementById('aiContent');
+    const instructionsWidget = document.getElementById('instructionsWidget');
+    
+    // Initialize quiz
+    function initQuiz() {
+      // Hide all questions initially
+      document.querySelectorAll('.quiz-question').forEach(q => {
+        q.style.display = 'none';
+      });
+      
+      // Show first question when quiz starts
+      startQuizBtn.addEventListener('click', () => {
+        instructionsWidget.style.display = 'none';
+        document.getElementById('question1').style.display = 'block';
+      });
+      
+      // Set up navigation
+      setupNavigation();
+      
+      // Set up option selection
+      setupOptionSelection();
+    }
+    
+    // Set up question navigation
+    function setupNavigation() {
+      // Next buttons
+      document.querySelectorAll('.nav-btn.next').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const currentId = btn.closest('.quiz-question').id;
+          const questionNum = parseInt(currentId.replace('question', ''));
+          
+          // Validate answer
+          if (answers[questionNum - 1] === null) {
+            alert('Please select an answer before continuing');
+            return;
+          }
+          
+          // Hide current question
+          document.getElementById(currentId).style.display = 'none';
+          
+          // Show next question
+          if (questionNum < 5) {
+            document.getElementById(`question${questionNum + 1}`).style.display = 'block';
+            currentQuestion = questionNum;
+          }
+        });
+      });
+      
+      // Previous buttons
+      document.querySelectorAll('.nav-btn.prev').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (!btn.disabled) {
+            const currentId = btn.closest('.quiz-question').id;
+            const questionNum = parseInt(currentId.replace('question', ''));
+            
+            // Hide current question
+            document.getElementById(currentId).style.display = 'none';
+            
+            // Show previous question
+            document.getElementById(`question${questionNum - 1}`).style.display = 'block';
+            currentQuestion = questionNum - 2;
+          }
+        });
+      });
+      
+      // Submit button
+      submitQuizBtn.addEventListener('click', () => {
+        // Validate answer
+        if (answers[4] === null) {
+          alert('Please select an answer before submitting');
+          return;
+        }
+        
+        // Hide last question
+        document.getElementById('question5').style.display = 'none';
+        
+        // Show AI analysis
+        aiAnalysis.style.display = 'block';
+        
+        // Process results after delay
+        setTimeout(processResults, 5000);
+      });
+    }
+    
+    // Set up option selection
+    function setupOptionSelection() {
+      document.querySelectorAll('.option-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const questionContainer = btn.closest('.quiz-question');
+          const questionId = questionContainer.id;
+          const questionNum = parseInt(questionId.replace('question', ''));
+          
+          // Remove selected class from all options in this question
+          questionContainer.querySelectorAll('.option-btn').forEach(option => {
+            option.classList.remove('selected');
+          });
+          
+          // Add selected class to clicked option
+          btn.classList.add('selected');
+          
+          // Store answer
+          answers[questionNum - 1] = parseInt(btn.dataset.value);
+        });
+      });
+    }
+    
+    // Process quiz results
+    function processResults() {
+      // Calculate total score
+      const totalScore = answers.reduce((sum, value) => sum + value, 0);
+      
+      // Determine result category
+      let result = '';
+      let description = '';
+      let icon = '';
+      let color = '';
+      let recommendations = [];
+      
+      if (totalScore <= 3) {
+        result = 'Stable Mood';
+        description = 'You\'re emotionally balanced. Keep it up! Your responses indicate you have good emotional regulation and resilience. Continue practicing self-care and mindfulness to maintain your mental wellbeing.';
+        icon = 'fas fa-smile-beam';
+        color = '#4CAF50';
+        recommendations = [
+          "Continue your current self-care practices",
+          "Practice mindfulness meditation for 10 minutes daily",
+          "Maintain social connections with friends and family",
+          "Set aside time for hobbies and activities you enjoy"
+        ];
+      } else if (totalScore <= 7) {
+        result = 'Mild Stress Detected';
+        description = 'Some signs of low mood or anxiety. You might be experiencing occasional stress or mood fluctuations. Consider incorporating relaxation techniques like deep breathing or short walks into your daily routine.';
+        icon = 'fas fa-meh';
+        color = '#FFC107';
+        recommendations = [
+          "Practice deep breathing exercises twice daily",
+          "Take short walks in nature at least 3 times a week",
+          "Establish a consistent sleep schedule",
+          "Limit caffeine and screen time before bed"
+        ];
+      } else if (totalScore <= 11) {
+        result = 'Moderate Concern';
+        description = 'Mood disruptions may be affecting daily life. Your responses suggest you might benefit from additional support. Consider speaking with a mental health professional or exploring stress management strategies.';
+        icon = 'fas fa-frown';
+        color = '#FF9800';
+        recommendations = [
+          "Consider speaking with a mental health professional",
+          "Practice journaling to process emotions",
+          "Engage in regular physical activity",
+          "Establish boundaries to reduce stress"
+        ];
+      } else {
+        result = 'High Stress / Low Mood';
+        description = 'You may be struggling emotionally. Your answers indicate significant emotional distress that could benefit from professional support. We strongly recommend speaking with a mental health professional.';
+        icon = 'fas fa-sad-tear';
+        color = '#F44336';
+        recommendations = [
+          "Contact a mental health professional as soon as possible",
+          "Reach out to trusted friends or family members for support",
+          "Prioritize self-care and rest",
+          "Consider joining a support group"
+        ];
+      }
+      
+      // Generate AI response
+      const aiResponse = `
+        <div class="result-display">
+          <div class="result-icon" style="color: ${color}">
+            <i class="${icon}"></i>
+          </div>
+          <div class="result-label">
+            Your Result: ${result}
+          </div>
+          <div class="result-score">
+            Total Score: ${totalScore}/15
+          </div>
+          <div class="result-description">
+            ${description}
+          </div>
+        </div>
+        
+        <div class="ai-insight">
+          <div class="insight-header">
+            <i class="fas fa-lightbulb"></i>
+            <h3>Personalized Recommendations</h3>
+          </div>
+          <div class="insight-content">
+            <div id="recommendationText"></div>
+          </div>
+        </div>
+        
+        <div class="ai-actions">
+          <button class="ai-btn primary" id="downloadReportBtn">
+            <i class="fas fa-file-pdf"></i> Download Report
+          </button>
+          <button class="ai-btn secondary" id="scheduleTherapyBtn">
+            <i class="fas fa-calendar-plus"></i> Schedule Therapy
+          </button>
+        </div>
+      `;
+      
+      // Update AI content
+      aiContent.innerHTML = aiResponse;
+      
+      // Apply typewriter effect to recommendations
+      setTimeout(() => {
+        const recommendationText = document.getElementById('recommendationText');
+        
+        let fullText = 'Based on your responses, we recommend:';
+        recommendations.forEach(rec => {
+          fullText += `\n• ${rec}`;
+        });
+        
+        // Create typewriter effect
+        let i = 0;
+        recommendationText.innerHTML = '';
+        
+        function type() {
+          if (i < fullText.length) {
+            // Handle line breaks
+            if (fullText.charAt(i) === '\n') {
+              recommendationText.innerHTML += '<br>';
+            } else {
+              recommendationText.innerHTML += fullText.charAt(i);
+            }
+            i++;
+            setTimeout(type, 20);
+          }
+        }
+        
+        type();
+        
+        // Set up report download
+        document.getElementById('downloadReportBtn').addEventListener('click', downloadReport);
+        
+        // Set up therapy scheduling
+        document.getElementById('scheduleTherapyBtn').addEventListener('click', () => {
+          alert('Therapy scheduling feature would open here. We recommend reaching out to one of our partners for professional support.');
+        });
+      }, 500);
+    }
+    
+    // Download report as PDF
+    function downloadReport() {
+      // Show loading indicator
+      const downloadBtn = document.getElementById('downloadReportBtn');
+      const originalText = downloadBtn.innerHTML;
+      downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating Report...';
+      
+      setTimeout(() => {
+        // Create a temporary container for the report
+        const tempContainer = document.createElement('div');
+        tempContainer.style.position = 'absolute';
+        tempContainer.style.left = '-9999px';
+        tempContainer.style.width = '800px';
+        tempContainer.style.padding = '30px';
+        tempContainer.style.background = '#f9f4ff';
+        tempContainer.style.fontFamily = 'Montserrat, sans-serif';
+        tempContainer.style.color = '#2B003E';
+        
+        // Add Healing Hut branding
+        const header = document.createElement('div');
+        header.style.display = 'flex';
+        header.style.alignItems = 'center';
+        header.style.marginBottom = '20px';
+        header.style.paddingBottom = '15px';
+        header.style.borderBottom = '2px solid #6A0DAD';
+        
+        const logo = document.createElement('div');
+        logo.innerHTML = '<i class="fas fa-spa" style="font-size: 2rem; color: #6A0DAD; margin-right: 15px;"></i>';
+        
+        const title = document.createElement('div');
+        title.innerHTML = '<h1 style="font-size: 1.8rem; color: #6A0DAD; margin: 0;">Healing Hut</h1><p style="margin: 0; color: #5a4cbd; font-size: 0.9rem;">Mental Health Assessment Report</p>';
+        
+        header.appendChild(logo);
+        header.appendChild(title);
+        tempContainer.appendChild(header);
+        
+        // Create a clone of the results content without action buttons
+        const resultDisplay = document.querySelector('.result-display').cloneNode(true);
+        const aiInsight = document.querySelector('.ai-insight').cloneNode(true);
+        
+        // Remove action buttons from the clone
+        const aiActions = aiInsight.querySelector('.ai-actions');
+        if (aiActions) {
+          aiActions.remove();
+        }
+        
+        // Add the result content to the PDF container
+        tempContainer.appendChild(resultDisplay);
+        tempContainer.appendChild(aiInsight);
+        
+        // Add Heal.AI branding at the bottom
+        const footer = document.createElement('div');
+        footer.style.textAlign = 'center';
+        footer.style.marginTop = '30px';
+        footer.style.paddingTop = '15px';
+        footer.style.borderTop = '1px solid #6A0DAD';
+        footer.style.color = '#6A0DAD';
+        footer.style.fontWeight = '600';
+        footer.innerHTML = 'Insights powered by Heal.AI';
+        tempContainer.appendChild(footer);
+        
+        document.body.appendChild(tempContainer);
+        
+        // Generate PDF
+        html2canvas(tempContainer, { scale: 2 }).then(canvas => {
+          const imgData = canvas.toDataURL('image/png');
+          
+          // Create PDF
+          const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+          const imgWidth = 190;
+          const imgHeight = canvas.height * imgWidth / canvas.width;
+          
+          pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+          pdf.save('HealAI_Self_Assessment_Report.pdf');
+          
+          // Clean up
+          document.body.removeChild(tempContainer);
+          
+          // Restore button
+          downloadBtn.innerHTML = originalText;
+        });
+      }, 1000);
+    }
+    
+    // Start the quiz
+    initQuiz();
+  </script>
+</body>
+</html>

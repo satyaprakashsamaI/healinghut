@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Healing Hut - Book Therapy Sessions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #f9f4ff, #e8d6ff);
+      color: #2B003E;
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    
+    /* Navbar Styles - Consistent with Healing Hut */
+    .navbar {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 1200px;
+      padding: 15px 30px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(107, 13, 173, 0.1);
+    }
+    
+    .brand h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: #6A0DAD;
+      font-weight: 700;
+    }
+    
+    .brand p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #2B003E;
+    }
+    
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+    
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 600;
+      color: #2B003E;
+      transition: color 0.3s ease;
+      font-size: 1rem;
+      position: relative;
+      padding: 5px 0;
+    }
+    
+    .nav-links a:hover {
+      color: #6A0DAD;
+    }
+    
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #6A0DAD;
+      transition: width 0.3s ease;
+    }
+    
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+    
+    .cta {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 12px;
+      background: #6A0DAD;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+    
+    .cta:hover {
+      background: #5a4cbd;
+      transform: translateY(-3px);
+      box-shadow: 0 4px 15px rgba(107, 13, 173, 0.3);
+    }
+    
+    /* Mobile Menu */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: #6A0DAD;
+      font-size: 1.5rem;
+      cursor: pointer;
+      margin-right: 15px;
+    }
+    
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .mobile-menu.active {
+      display: flex;
+    }
+    
+    .mobile-menu .nav-links {
+      flex-direction: column;
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+    
+    .mobile-menu .nav-links a {
+      font-size: 1.3rem;
+    }
+    
+    .mobile-menu .cta {
+      padding: 15px 30px;
+      font-size: 1.2rem;
+    }
+    
+    .close-menu-btn {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      color: #6A0DAD;
+      cursor: pointer;
+    }
+    
+    /* Booking Page Header with Store Button */
+    .booking-header {
+      margin-top: 140px;
+      padding: 80px 20px 60px;
+      text-align: center;
+      background: linear-gradient(135deg, #6A0DAD, #5a4cbd);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .booking-header h1 {
+      font-size: 3.2rem;
+      margin-bottom: 20px;
+      font-weight: 700;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .booking-header p {
+      font-size: 1.5rem;
+      max-width: 700px;
+      margin: 0 auto 40px;
+      opacity: 0.9;
+    }
+    
+    .ai-powered {
+      display: inline-block;
+      background: white;
+      color: black;
+      padding: 8px 20px;
+      border-radius: 30px;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Golden Store Button */
+    .store-btn {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(45deg, #FFD700, #FFA500, #FFD700);
+      color: #2B003E;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+      z-index: 10;
+      overflow: hidden;
+    }
+    
+    .store-btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 20px;
+      height: 200%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: rotate(25deg);
+      transition: all 0.6s ease;
+    }
+    
+    .store-btn:hover::after {
+      left: 120%;
+    }
+    
+    .store-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255, 215, 0, 0.5);
+    }
+    
+    .store-btn i {
+      color: #2B003E;
+      font-size: 1.2rem;
+    }
+    
+    /* Decorative elements */
+    .booking-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 Q50,10 100,0 L100,100 Q50,90 0,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+      background-size: 100% auto;
+      background-position: bottom;
+      background-repeat: no-repeat;
+    }
+    
+    /* Category Filters - Single Row with Arrows */
+    .categories {
+      max-width: 1000px;
+      margin: -40px auto 60px;
+      padding: 0 20px;
+      position: relative;
+      z-index: 3;
+    }
+    
+    .category-wrapper {
+      position: relative;
+    }
+    
+    .category-scroll-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: white;
+      border: none;
+      color: #6A0DAD;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      z-index: 10;
+      transition: all 0.3s ease;
+    }
+    
+    .category-scroll-btn:hover {
+      background: #f0e5ff;
+      transform: translateY(-50%) scale(1.1);
+    }
+    
+    .scroll-left {
+      left: -20px;
+    }
+    
+    .scroll-right {
+      right: -20px;
+    }
+    
+    .category-container {
+      display: flex;
+      background: white;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(107, 13, 173, 0.15);
+      overflow-x: auto;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      scroll-behavior: smooth;
+    }
+    
+    .category-container::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .category-btn {
+      padding: 14px 25px;
+      border: none;
+      border-radius: 50px;
+      background: #f0e5ff;
+      color: #2B003E;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-right: 12px;
+      flex-shrink: 0;
+    }
+    
+    .category-btn:last-child {
+      margin-right: 0;
+    }
+    
+    .category-btn:hover, .category-btn.active {
+      background: #6A0DAD;
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(107, 13, 173, 0.3);
+    }
+    
+    /* Therapists Section */
+    .therapists-section {
+      max-width: 1200px;
+      margin: 0 auto 80px;
+      padding: 0 20px;
+    }
+    
+    .section-title {
+      font-size: 2.2rem;
+      color: #6A0DAD;
+      margin-bottom: 30px;
+      text-align: center;
+      font-weight: 700;
+    }
+    
+    .therapists-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 30px;
+    }
+    
+    @media (max-width: 768px) {
+      .therapists-container {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .therapist-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(107, 13, 173, 0.15);
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .therapist-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(107, 13, 173, 0.25);
+    }
+    
+    .therapist-header {
+      display: flex;
+      padding: 25px;
+      border-bottom: 1px solid #f0e5ff;
+    }
+    
+    .therapist-img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #f0e5ff;
+      margin-right: 20px;
+      background: #f0e5ff;
+    }
+    
+    .therapist-info {
+      flex: 1;
+    }
+    
+    .therapist-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #2B003E;
+      margin-bottom: 5px;
+    }
+    
+    .therapist-price {
+      background: #f0e5ff;
+      color: #6A0DAD;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+    
+    .therapist-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    
+    .tag {
+      background: #f9f4ff;
+      color: #5a4cbd;
+      padding: 5px 12px;
+      border-radius: 15px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    
+    .therapist-details {
+      padding: 20px 25px;
+      flex: 1;
+    }
+    
+    .detail-item {
+      display: flex;
+      margin-bottom: 12px;
+    }
+    
+    .detail-item i {
+      color: #6A0DAD;
+      width: 24px;
+      font-size: 1.1rem;
+      margin-right: 10px;
+    }
+    
+    .detail-text {
+      flex: 1;
+    }
+    
+    .ratings {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+    }
+    
+    .stars {
+      color: #FFD700;
+      margin-right: 10px;
+    }
+    
+    .rating-value {
+      font-weight: 600;
+      color: #2B003E;
+    }
+    
+    .therapist-footer {
+      padding: 20px 25px;
+      background: #f9f4ff;
+      text-align: center;
+    }
+    
+    .schedule-btn {
+      padding: 14px 35px;
+      background: #6A0DAD;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+    
+    .schedule-btn:hover {
+      background: #5a4cbd;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(107, 13, 173, 0.3);
+    }
+    
+    /* Footer - Consistent with Healing Hut */
+    .footer {
+      background: linear-gradient(135deg, #2B003E, #1a0029);
+      color: white;
+      padding: 70px 20px 40px;
+      text-align: center;
+      border-radius: 0;
+    }
+    
+    .footer-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .footer-logo {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .footer-logo i {
+      color: #F7E8FF;
+    }
+    
+    .footer-tagline {
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+      max-width: 500px;
+      opacity: 0.9;
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+    
+    .footer-links a {
+      color: #F7E8FF;
+      text-decoration: none;
+      transition: color 0.3s;
+      font-weight: 500;
+      position: relative;
+      padding-bottom: 5px;
+    }
+    
+    .footer-links a:hover {
+      color: white;
+    }
+    
+    .footer-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: white;
+      transition: width 0.3s ease;
+    }
+    
+    .footer-links a:hover::after {
+      width: 100%;
+    }
+    
+    .copyright {
+      font-size: 0.95rem;
+      color: #A88CC7;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(168, 140, 199, 0.3);
+      width: 100%;
+      max-width: 600px;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 900px) {
+      .booking-header h1 {
+        font-size: 2.8rem;
+      }
+      
+      .booking-header p {
+        font-size: 1.2rem;
+      }
+      
+      .category-btn {
+        padding: 12px 20px;
+        font-size: 1rem;
+      }
+      
+      .category-scroll-btn {
+        display: none;
+      }
+      
+      .store-btn {
+        position: relative;
+        top: 0;
+        right: 0;
+        margin: 15px auto 0;
+        display: block;
+        width: fit-content;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .booking-header {
+        padding: 80px 20px 60px;
+        margin-top: 160px;
+      }
+      
+      .booking-header h1 {
+        font-size: 2.2rem;
+      }
+      
+      .section-title {
+        font-size: 1.8rem;
+      }
+      
+      .therapist-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      
+      .therapist-img {
+        margin-right: 0;
+        margin-bottom: 20px;
+      }
+      
+      /* Mobile navbar adjustments */
+      .navbar {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 15px 20px;
+      }
+      
+      .brand {
+        order: 2;
+        text-align: center;
+        flex: 1;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+        order: 1;
+      }
+      
+      .nav-links {
+        display: none;
+      }
+      
+      .navbar .cta {
+        display: none;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .booking-header h1 {
+        font-size: 1.8rem;
+      }
+      
+      .booking-header p {
+        font-size: 1rem;
+      }
+      
+      .category-container {
+        padding: 20px 15px;
+      }
+      
+      .category-btn {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+      }
+      
+      .footer-links {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Consistent Navbar -->
+  <nav class="navbar">
+    <button class="mobile-menu-btn">
+      <i class="fas fa-bars"></i>
+    </button>
+    
+    <div class="brand">
+      <h1>Healing Hut</h1>
+      <p>Healing is for everyone.</p>
+    </div>
+    
+    <div class="nav-links">
+      <a href="mood.html">Mood Tracker</a>
+      <a href="quiz.html">Mental Quiz</a>
+      <a href="index.html#partners">Our Partners</a>
+      <a href="index.html#testimonials">Testimonials</a>
+      <a href="index.html#contact">Contact Us</a>
+    </div>
+    <button class="cta" onclick="window.location.href='session.html'">Book a Therapy!</button>
+  </nav>
+  
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="close-menu-btn">
+      <i class="fas fa-times"></i>
+    </button>
+    
+    <div class="nav-links">
+      <a href="mood.html">Mood Tracker</a>
+      <a href="quiz.html">Mental Quiz</a>
+      <a href="index.html#partners">Our Partners</a>
+      <a href="index.html#testimonials">Testimonials</a>
+      <a href="index.html#contact">Contact Us</a>
+    </div>
+    <button class="cta" onclick="window.location.href='session.html'">Book a Therapy!</button>
+  </div>
+
+  <!-- Booking Page Header with Store Button -->
+  <header class="booking-header">
+    <button class="store-btn" id="storeButton">
+      <i class="fas fa-store"></i> Store
+    </button>
+    
+    <div class="header-content">
+      <h1>Connect with a Certified Mental Health Expert</h1>
+      <p>Personalized Recommendations, Powered by <span class="ai-powered">Heal.<strong>AI</strong></span></p>
+    </div>
+  </header>
+  
+  <!-- Category Filters with Navigation Arrows -->
+  <section class="categories">
+    <div class="category-wrapper">
+      <button class="category-scroll-btn scroll-left">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      
+      <div class="category-container" id="categoryContainer">
+        <button class="category-btn active" data-category="all">All Experts</button>
+        <button class="category-btn" data-category="stress">Stress 🧠</button>
+        <button class="category-btn" data-category="relationship">Relationship 💔</button>
+        <button class="category-btn" data-category="workplace">Workplace 💼</button>
+        <button class="category-btn" data-category="self-esteem">Self-Esteem 🌟</button>
+        <button class="category-btn" data-category="depression">Depression 🌧️</button>
+        <button class="category-btn" data-category="procrastination">Procrastination 💤</button>
+      </div>
+      
+      <button class="category-scroll-btn scroll-right">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </section>
+  
+  <!-- Therapists Section with Professional Images -->
+  <section class="therapists-section">
+    <h2 class="section-title">Available Mental Health Experts</h2>
+    
+    <div class="therapists-container" id="therapistsContainer">
+      <!-- Therapist cards will be populated here -->
+    </div>
+  </section>
+  
+  <!-- Consistent Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <i class="fas fa-spa"></i>
+        Healing Hut
+      </div>
+      <p class="footer-tagline">Healing is for everyone | Making mental wellness accessible to everyone and everywhere.</p>
+      
+      <div class="footer-links">
+        <a href="mood.html">Mood Tracker</a>
+        <a href="quiz.html">Mental Quiz</a>
+        <a href="index.html#partners">Our Partners</a>
+        <a href="index.html#testimonials">Testimonials</a>
+        <a href="index.html#contact">Contact Us</a>
+      </div>
+      
+      <div class="copyright">
+        &copy; 2025 Healing Hut. All rights reserved. | Privacy Policy | Terms of Service
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Allowed categories (only these will be shown)
+    const allowedCategories = [
+      'Stress', 'Relationship', 'Workplace', 
+      'Self-Esteem', 'Depression', 'Procrastination'
+    ];
+    
+    // Therapist data with professional images
+    const therapists = [
+      {
+        id: 1,
+        name: "Dr. Sarah Johnson",
+        price: "$120",
+        specialties: ["Stress", "Workplace"],
+        qualifications: "PhD in Clinical Psychology",
+        experience: "12 years",
+        languages: "English, Spanish",
+        rating: 4.9,
+        reviews: 128,
+        image: "1.png"
+      },
+      {
+        id: 2,
+        name: "Dr. Michael Chen",
+        price: "$150",
+        specialties: ["Relationship"],
+        qualifications: "PsyD, Licensed Marriage Therapist",
+        experience: "8 years",
+        languages: "English, Mandarin",
+        rating: 4.8,
+        reviews: 95,
+        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&h=200&q=80"
+      },
+      {
+        id: 3,
+        name: "Dr. Priya Sharma",
+        price: "$110",
+        specialties: ["Self-Esteem"],
+        qualifications: "MA in Counseling Psychology",
+        experience: "6 years",
+        languages: "English, Hindi",
+        rating: 4.7,
+        reviews: 76,
+        image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&h=200&q=80"
+      },
+      {
+        id: 4,
+        name: "Dr. Robert Williams",
+        price: "$140",
+        specialties: ["Depression"],
+        qualifications: "PhD in Clinical Psychology",
+        experience: "15 years",
+        languages: "English",
+        rating: 4.9,
+        reviews: 142,
+        image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&h=200&q=80"
+      },
+      {
+        id: 5,
+        name: "Dr. Emma Rodriguez",
+        price: "$130",
+        specialties: ["Procrastination"],
+        qualifications: "PsyD, ADHD Specialist",
+        experience: "7 years",
+        languages: "English, Spanish",
+        rating: 4.6,
+        reviews: 88,
+        image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&h=200&q=80"
+      },
+      {
+        id: 6,
+        name: "Dr. James Wilson",
+        price: "$125",
+        specialties: ["Workplace"],
+        qualifications: "PhD in Organizational Psychology",
+        experience: "10 years",
+        languages: "English, French",
+        rating: 4.8,
+        reviews: 112,
+        image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&h=200&q=80"
+      },
+      {
+        id: 7,
+        name: "Dr. Aisha Khan",
+        price: "$115",
+        specialties: ["Relationship"],
+        qualifications: "LMFT, Family Systems Specialist",
+        experience: "9 years",
+        languages: "English, Urdu",
+        rating: 4.7,
+        reviews: 97,
+        image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&h=200&q=80"
+      },
+      {
+        id: 8,
+        name: "Dr. Thomas Anderson",
+        price: "$145",
+        specialties: ["Depression"],
+        qualifications: "PhD in Clinical Psychology",
+        experience: "14 years",
+        languages: "English, German",
+        rating: 4.9,
+        reviews: 156,
+        image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&h=200&q=80"
+      },
+      {
+        id: 9,
+        name: "Dr. Olivia Parker",
+        price: "$135",
+        specialties: ["Self-Esteem"],
+        qualifications: "PsyD, Life Coach Certification",
+        experience: "11 years",
+        languages: "English",
+        rating: 4.8,
+        reviews: 121,
+        image: "https://images.unsplash.com/photo-1611689103472-06a0b695c6b5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&h=200&q=80"
+      },
+      {
+        id: 10,
+        name: "Dr. Benjamin Lee",
+        price: "$125",
+        specialties: ["Procrastination"],
+        qualifications: "MA in Counseling, Productivity Coach",
+        experience: "5 years",
+        languages: "English, Korean",
+        rating: 4.6,
+        reviews: 82,
+        image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&h=200&q=80"
+      },
+      {
+        id: 11,
+        name: "Dr. Sophia Martinez",
+        price: "$135",
+        specialties: ["Stress", "Workplace"],
+        qualifications: "PhD in Counseling Psychology",
+        experience: "9 years",
+        languages: "English, Spanish",
+        rating: 4.7,
+        reviews: 104,
+        image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&h=200&q=80"
+      },
+      {
+        id: 12,
+        name: "Dr. William Thompson",
+        price: "$140",
+        specialties: ["Depression", "Anxiety"],
+        qualifications: "PsyD, Clinical Psychologist",
+        experience: "11 years",
+        languages: "English",
+        rating: 4.9,
+        reviews: 138,
+        image: "https://images.unsplash.com/photo-1606495214934-4050b22ab307?q=80&w=686&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+      }
+    ];
+    
+    // Generate star ratings
+    function generateStars(rating) {
+      let stars = '';
+      for (let i = 1; i <= 5; i++) {
+        if (i <= Math.floor(rating)) {
+          stars += '<i class="fas fa-star"></i>';
+        } else if (i - 0.5 <= rating) {
+          stars += '<i class="fas fa-star-half-alt"></i>';
+        } else {
+          stars += '<i class="far fa-star"></i>';
+        }
+      }
+      return stars;
+    }
+    
+    // Render therapist cards with professional images
+    function renderTherapists(filter = 'all') {
+      const container = document.getElementById('therapistsContainer');
+      container.innerHTML = '';
+      
+      therapists.forEach(therapist => {
+        if (filter !== 'all' && !therapist.specialties.map(s => s.toLowerCase()).includes(filter)) {
+          return;
+        }
+        
+        const card = document.createElement('div');
+        card.className = 'therapist-card';
+        card.innerHTML = `
+          <div class="therapist-header">
+            <img class="therapist-img" src="${therapist.image}" alt="${therapist.name}">
+            <div class="therapist-info">
+              <div class="therapist-name">${therapist.name}</div>
+              <div class="therapist-price">${therapist.price} per 30min</div>
+              <div class="therapist-tags">
+                ${therapist.specialties.map(spec => `<span class="tag">${spec}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+          
+          <div class="therapist-details">
+            <div class="detail-item">
+              <i class="fas fa-graduation-cap"></i>
+              <div class="detail-text">${therapist.qualifications}</div>
+            </div>
+            
+            <div class="detail-item">
+              <i class="fas fa-briefcase"></i>
+              <div class="detail-text">${therapist.experience} experience</div>
+            </div>
+            
+            <div class="detail-item">
+              <i class="fas fa-language"></i>
+              <div class="detail-text">${therapist.languages}</div>
+            </div>
+            
+            <div class="ratings">
+              <div class="stars">${generateStars(therapist.rating)}</div>
+              <div class="rating-value">${therapist.rating} (${therapist.reviews} reviews)</div>
+            </div>
+          </div>
+          
+          <div class="therapist-footer">
+            <button class="schedule-btn">Schedule Session</button>
+          </div>
+        `;
+        
+        container.appendChild(card);
+      });
+    }
+    
+    // Category filter functionality
+    function setupCategoryFilters() {
+      const buttons = document.querySelectorAll('.category-btn');
+      
+      buttons.forEach(button => {
+        button.addEventListener('click', () => {
+          // Remove active class from all buttons
+          buttons.forEach(btn => btn.classList.remove('active'));
+          
+          // Add active class to clicked button
+          button.classList.add('active');
+          
+          // Filter therapists
+          const category = button.dataset.category;
+          renderTherapists(category);
+        });
+      });
+    }
+    
+    // Category scrolling functionality
+    function setupCategoryScrolling() {
+      const container = document.getElementById('categoryContainer');
+      const scrollLeftBtn = document.querySelector('.scroll-left');
+      const scrollRightBtn = document.querySelector('.scroll-right');
+      
+      scrollLeftBtn.addEventListener('click', () => {
+        container.scrollBy({
+          left: -200,
+          behavior: 'smooth'
+        });
+      });
+      
+      scrollRightBtn.addEventListener('click', () => {
+        container.scrollBy({
+          left: 200,
+          behavior: 'smooth'
+        });
+      });
+    }
+    
+    // Mobile menu functionality
+    function setupMobileMenu() {
+      const menuBtn = document.querySelector('.mobile-menu-btn');
+      const closeBtn = document.querySelector('.close-menu-btn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      
+      menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+      
+      closeBtn.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+      
+      // Close menu when clicking on links
+      mobileMenu.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.remove('active');
+          document.body.style.overflow = '';
+        });
+      });
+    }
+    
+    // Store button redirect
+    function setupStoreButton() {
+      const storeBtn = document.getElementById('storeButton');
+      storeBtn.addEventListener('click', () => {
+        window.location.href = 'store.html';
+      });
+    }
+    
+    // Initialize page
+    function initPage() {
+      renderTherapists();
+      setupCategoryFilters();
+      setupCategoryScrolling();
+      setupMobileMenu();
+      setupStoreButton();
+      
+      // Add smooth scrolling for footer links
+      document.querySelectorAll('.footer-links a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth'
+            });
+          }
+        });
+      });
+    }
+    
+    // Start the application
+    initPage();
+  </script>
+</body>
+</html>

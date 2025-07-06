@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Healing Hut - Wellness Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(135deg, #f9f4ff, #e8d6ff);
+      color: #2B003E;
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    
+   
+    /* Navbar Styles */
+    .navbar {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 1200px;
+      padding: 15px 30px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(107, 13, 173, 0.1);
+    }
+    
+    
+    .brand h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: #6A0DAD;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    
+    .brand p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #2B003E;
+    }
+    
+     .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+    
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 600;
+      color: #2B003E;
+      transition: color 0.3s ease;
+      font-size: 1rem;
+      position: relative;
+      padding: 5px 0;
+    }
+    
+    .nav-links a:hover {
+      color: #6A0DAD;
+    }
+    
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #6A0DAD;
+      transition: width 0.3s ease;
+    }
+    
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+    
+    .cta {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 12px;
+      background: #6A0DAD;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+    
+    .cta:hover {
+      background: #5a4cbd;
+      transform: translateY(-3px);
+      box-shadow: 0 4px 15px rgba(107, 13, 173, 0.3);
+    }
+    
+    
+    /* Mobile Menu */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #6A0DAD;
+      cursor: pointer;
+    }
+    
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(5px);
+      z-index: 9999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+    }
+    
+    .mobile-menu a {
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #2B003E;
+    }
+    
+    .mobile-menu .cta {
+      margin-top: 20px;
+    }
+    
+    .close-btn {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      color: #6A0DAD;
+      cursor: pointer;
+    }
+    
+    /* Store Header */
+    .store-header {
+      margin-top: 140px;
+      padding: 80px 20px 60px;
+      text-align: center;
+      background: linear-gradient(135deg, #6A0DAD, #5a4cbd);
+      color: white;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+    
+    .header-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .store-header h1 {
+      font-size: 3.2rem;
+      margin-bottom: 20px;
+      font-weight: 700;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .store-header p {
+      font-size: 1.5rem;
+      max-width: 700px;
+      margin: 0 auto 40px;
+      opacity: 0.9;
+    }
+    
+    .ai-powered {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.9);
+      color: black;
+      padding: 8px 20px;
+      border-radius: 30px;
+      font-weight: 700;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Decorative elements */
+    .store-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 Q50,10 100,0 L100,100 Q50,90 0,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+      background-size: 100% auto;
+      background-position: bottom;
+      background-repeat: no-repeat;
+    }
+    
+    /* Products Section */
+    .products-section {
+      max-width: 1200px;
+      margin: 0 auto 80px;
+      padding: 0 20px;
+    }
+    
+    .products-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 30px;
+    }
+    
+    .product-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(107, 13, 173, 0.15);
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .product-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(107, 13, 173, 0.25);
+    }
+    
+    .product-image {
+      height: 220px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      background: #f9f4ff;
+    }
+    
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    
+    .product-card:hover .product-image img {
+      transform: scale(1.05);
+    }
+    
+    .product-info {
+      padding: 25px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .product-name {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #2B003E;
+      margin-bottom: 12px;
+    }
+    
+    .product-category {
+      font-size: 0.9rem;
+      color: #5a4cbd;
+      background: #f0e5ff;
+      padding: 5px 12px;
+      border-radius: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+    
+    .product-description {
+      color: #5a4cbd;
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+    
+    .product-prices {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .current-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #6A0DAD;
+    }
+    
+    .old-price {
+      font-size: 1.1rem;
+      color: #9E9E9E;
+      text-decoration: line-through;
+    }
+    
+    .product-rating {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .stars {
+      color: #FFD700;
+      margin-right: 10px;
+    }
+    
+    .rating-value {
+      font-weight: 600;
+      color: #2B003E;
+      font-size: 0.95rem;
+    }
+    
+    .buy-btn {
+      padding: 14px;
+      background: #6A0DAD;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .buy-btn:hover {
+      background: #5a4cbd;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(107, 13, 173, 0.3);
+    }
+    
+    /* Updated Footer - Matches Mood Tracker Page */
+    .footer {
+      background: linear-gradient(135deg, #2B003E, #1a0029);
+      color: white;
+      padding: 70px 20px 40px;
+      text-align: center;
+      border-radius: 0;
+    }
+    
+    .footer-content {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .footer-logo {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .footer-logo i {
+      color: #F7E8FF;
+    }
+    
+    .footer-tagline {
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+      max-width: 500px;
+      opacity: 0.9;
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+    
+    .footer-links a {
+      color: #F7E8FF;
+      text-decoration: none;
+      transition: color 0.3s;
+      font-weight: 500;
+      position: relative;
+      padding-bottom: 5px;
+    }
+    
+    .footer-links a:hover {
+      color: white;
+    }
+    
+    .footer-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: white;
+      transition: width 0.3s ease;
+    }
+    
+    .footer-links a:hover::after {
+      width: 100%;
+    }
+    
+    .copyright {
+      font-size: 0.95rem;
+      color: #A88CC7;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(168, 140, 199, 0.3);
+      width: 100%;
+      max-width: 600px;
+    }
+    
+    
+    /* Responsive Design */
+    @media (max-width: 900px) {
+      .store-header h1 {
+        font-size: 2.8rem;
+      }
+      
+      .store-header p {
+        font-size: 1.2rem;
+      }
+      
+      .navbar {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .store-header {
+        padding: 80px 20px 60px;
+        margin-top: 160px;
+      }
+      
+      .store-header h1 {
+        font-size: 2.2rem;
+      }
+      
+      /* Mobile menu styles */
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .nav-links {
+        display: none;
+      }
+      
+      .cta {
+        display: none;
+      }
+      
+      .products-container {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .store-header h1 {
+        font-size: 1.8rem;
+      }
+      
+      .store-header p {
+        font-size: 1rem;
+      }
+      
+      .footer-links {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="brand" onclick="window.location.href='index.html'">
+      <h1>Healing Hut</h1>
+      <p>Healing is for everyone.</p>
+    </div>
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="nav-links">
+      <a href="mood.html">Mood Tracker</a>
+      <a href="quiz.html">Mental Quiz</a>
+      <a href="index.html#partners">Our Partners</a>
+      <a href="index.html#testimonials">Testimonials</a>
+    </div>
+    <button class="cta" onclick="window.location.href='session.html'">Book a Therapy!</button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="close-btn" id="closeBtn">
+      <i class="fas fa-times"></i>
+    </button>
+    <a href="mood.html">Mood Tracker</a>
+    <a href="quiz.html">Mental Quiz</a>
+    <a href="index.html#partners">Our Partners</a>
+    <a href="index.html#testimonials">Testimonials</a>
+    <button class="cta" onclick="window.location.href='session.html'">Book a Therapy!</button>
+  </div>
+
+  <!-- Store Header -->
+  <header class="store-header">
+    <div class="header-content">
+      <h1>Wellness Products for Mind & Body</h1>
+      <p>Curated self-care essentials powered by <span class="ai-powered">Heal.<strong>AI</strong></span></p>
+    </div>
+  </header>
+  
+  <!-- Products Section -->
+  <section class="products-section">
+    <div class="products-container" id="productsContainer">
+      <!-- Product cards will be populated here -->
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo" onclick="window.location.href='index.html'">
+        <i class="fas fa-spa"></i>
+        Healing Hut
+      </div>
+      <p class="footer-tagline">Healing is for everyone | Making mental wellness accessible to everyone and everywhere.</p>
+      
+      <div class="footer-links">
+        <a href="mood.html">Mood Tracker</a>
+        <a href="quiz.html">Mental Quiz</a>
+        <a href="index.html#partners">Our Partners</a>
+        <a href="index.html#testimonials">Testimonials</a>
+        <a href="index.html#contact">Contact Us</a>
+      </div>
+      
+      <div class="copyright">
+        &copy; 2025 Healing Hut. All rights reserved. | Privacy Policy | Terms of Service
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Product data with category symbols
+    const products = [
+      {
+        id: 1,
+        name: "CalmEssence Roll-On",
+        category: "Stress & Anxiety",
+        symbol: "🧠",
+        description: "Lavender & peppermint essential oil blend to reduce stress instantly.",
+        currentPrice: "₹449",
+        oldPrice: "₹599",
+        rating: 4.8,
+        reviews: 142,
+        image: "S1.jpeg"
+      },
+      {
+        id: 2,
+        name: "DeepRest Eye Mask",
+        category: "Stress & Anxiety",
+        symbol: "🧠",
+        description: "Weighted velvet eye mask that calms your senses and improves sleep.",
+        currentPrice: "₹599",
+        oldPrice: "₹799",
+        rating: 4.7,
+        reviews: 98,
+        image: "_aa560187-4c3b-4f56-87eb-121633ed9e54.jpeg"
+      },
+      {
+        id: 3,
+        name: "The Bond Journal",
+        category: "Relationships & Emotions",
+        symbol: "💞",
+        description: "A guided journal for couples to deepen connection and communication.",
+        currentPrice: "₹499",
+        oldPrice: "₹699",
+        rating: 4.9,
+        reviews: 210,
+        image: "S3.png"
+      },
+      {
+        id: 4,
+        name: "Gratitude Grove Diary",
+        category: "Relationships & Emotions",
+        symbol: "💞",
+        description: "Daily journaling to foster positivity and emotional wellness.",
+        currentPrice: "₹349",
+        oldPrice: "₹499",
+        rating: 4.6,
+        reviews: 87,
+        image: "S4.png"
+      },
+      {
+        id: 5,
+        name: "FocusPro Timer Cube",
+        category: "Workplace & Procrastination",
+        symbol: "💼",
+        description: "Boost productivity using Pomodoro cycles with this minimalist timer.",
+        currentPrice: "₹699",
+        oldPrice: "₹899",
+        rating: 4.8,
+        reviews: 325,
+        image: "S5.png"
+      },
+      {
+        id: 6,
+        name: "ZenSpace Desk Garden",
+        category: "Workplace & Procrastination",
+        symbol: "💼",
+        description: "Mini sand garden to relieve work stress and enhance focus.",
+        currentPrice: "₹599",
+        oldPrice: "₹799",
+        rating: 4.7,
+        reviews: 156,
+        image: "S6.png"
+      },
+      {
+        id: 7,
+        name: "RiseUp Affirmation Cards",
+        category: "Self-Esteem & Confidence",
+        symbol: "🌟",
+        description: "52 powerful quotes to boost confidence and inner strength.",
+        currentPrice: "₹199",
+        oldPrice: "₹499",
+        rating: 4.9,
+        reviews: 243,
+        image: "S7.png"
+      },
+      {
+        id: 8,
+        name: "Confidence Crystal Set",
+        category: "Self-Esteem & Confidence",
+        symbol: "🌟",
+        description: "A curated set of healing crystals like citrine and rose quartz, known to promote self-love, positivity, and inner strength.",
+        currentPrice: "₹549",
+        oldPrice: "₹799",
+        rating: 4.8,
+        reviews: 132,
+        image: "S8.png"
+      },
+      {
+        id: 9,
+        name: "ArtEase Therapy Kit",
+        category: "Depression & Low Mood",
+        symbol: "🌧️",
+        description: "Paint-by-numbers art activity for emotional relaxation and creativity.",
+        currentPrice: "₹649",
+        oldPrice: "₹999",
+        rating: 4.5,
+        reviews: 98,
+        image: "S9.png"
+      },
+      {
+        id: 10,
+        name: "MoodMate Tracker Pad",
+        category: "Depression & Low Mood",
+        symbol: "🌧️",
+        description: "Track your feelings and patterns to understand your emotional health.",
+        currentPrice: "₹249",
+        oldPrice: "₹349",
+        rating: 4.6,
+        reviews: 187,
+        image: "S10.png"
+      },
+      {
+        id: 11,
+        name: "Wooden Spinner",
+        category: "Stress & Anxiety",
+        symbol: "🧠",
+        description: "A handcrafted wooden spinner designed to reduce stress and improve focus with slow, meditative motion.",
+        currentPrice: "₹399",
+        oldPrice: "₹549",
+        rating: 4.7,
+        reviews: 115,
+        image: "S11.png"
+      },
+      {
+        id: 12,
+        name: "MoodBlocks",
+        category: "Depression & Low Mood",
+        symbol: "🌧️",
+        description: "A set of rotating wooden blocks with emoji faces to express and acknowledge daily moods non-verbally.",
+        currentPrice: "₹449",
+        oldPrice: "₹599",
+        rating: 4.8,
+        reviews: 204,
+        image: "S12.png"
+      }
+    ];
+    
+    // Generate star ratings
+    function generateStars(rating) {
+      let stars = '';
+      for (let i = 1; i <= 5; i++) {
+        if (i <= Math.floor(rating)) {
+          stars += '<i class="fas fa-star"></i>';
+        } else if (i - 0.5 <= rating) {
+          stars += '<i class="fas fa-star-half-alt"></i>';
+        } else {
+          stars += '<i class="far fa-star"></i>';
+        }
+      }
+      return stars;
+    }
+    
+    // Render product cards with category symbols
+    function renderProducts() {
+      const container = document.getElementById('productsContainer');
+      container.innerHTML = '';
+      
+      products.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+          <div class="product-image">
+            <img src="${product.image}" alt="${product.name}">
+          </div>
+          <div class="product-info">
+            <div class="product-category">${product.symbol} ${product.category}</div>
+            <div class="product-name">${product.name}</div>
+            <div class="product-description">${product.description}</div>
+            <div class="product-prices">
+              <div class="current-price">${product.currentPrice}</div>
+              <div class="old-price">${product.oldPrice}</div>
+            </div>
+            <div class="product-rating">
+              <div class="stars">${generateStars(product.rating)}</div>
+              <div class="rating-value">${product.rating} (${product.reviews})</div>
+            </div>
+            <button class="buy-btn">
+              <i class="fas fa-shopping-cart"></i> Buy Now
+            </button>
+          </div>
+        `;
+        
+        container.appendChild(card);
+      });
+    }
+    
+    // Mobile menu functionality
+    function setupMobileMenu() {
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      const closeBtn = document.getElementById('closeBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.style.display = 'flex';
+      });
+      
+      closeBtn.addEventListener('click', () => {
+        mobileMenu.style.display = 'none';
+      });
+      
+      // Close menu when clicking on links
+      mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.style.display = 'none';
+        });
+      });
+    }
+    
+    // Initialize page
+    function initPage() {
+      renderProducts();
+      setupMobileMenu();
+      
+      // Make footer links work
+      document.querySelectorAll('.footer-links a').forEach(link => {
+        link.addEventListener('click', function(e) {
+          // For anchor links, let them behave normally
+          if (this.getAttribute('href').startsWith('#')) {
+            return;
+          }
+          // For other links, prevent default and navigate
+          e.preventDefault();
+          window.location.href = this.getAttribute('href');
+        });
+      });
+      
+      // Make Healing Hut logo clickable in footer
+      document.querySelector('.footer-logo').addEventListener('click', function() {
+        window.location.href = 'index.html';
+      });
+    }
+    
+    // Start the application
+    initPage();
+  </script>
+</body>
+</html>
