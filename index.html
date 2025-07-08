@@ -44,6 +44,17 @@
       box-shadow: 0 4px 20px rgba(107, 13, 173, 0.1);
     }
     
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .brand-icon {
+      font-size: 1.8rem;
+      color: #6A0DAD;
+    }
+    
     .brand h1 {
       margin: 0;
       font-size: 1.8rem;
@@ -135,11 +146,15 @@
       height: 100%;
       object-fit: cover;
       border-radius: 20px;
-      transition: transform 0.5s ease;
+      opacity: 0;
+      transition: opacity 1s ease;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
     
-    .hero-container:hover .hero-img {
-      transform: scale(1.05);
+    .hero-img.active {
+      opacity: 1;
     }
     
     .arrow {
@@ -159,6 +174,7 @@
       color: #6A0DAD;
       transition: all 0.3s ease;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      z-index: 10;
     }
     
     .arrow:hover {
@@ -190,28 +206,37 @@
     }
     
     .section-subtitle {
-      font-size: 1.2rem;
+      font-size: 1.8rem;
       color: #2B003E;
       margin-bottom: 50px;
-      max-width: 700px;
+      max-width: 1000px;
       margin-left: auto;
       margin-right: auto;
+      line-height: 1.6;
+    }
+    
+    .partners-container {
+      overflow: hidden;
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .partner-track {
+      display: flex;
+      animation: scroll-partners 25s linear infinite;
     }
     
     .partner-logos {
       display: flex;
       justify-content: center;
       align-items: center;
-      flex-wrap: nowrap;
       gap: 50px;
-      max-width: 1200px;
-      margin: 0 auto;
-      overflow-x: auto;
       padding: 10px 0;
     }
     
     .partner-logo {
-      width: 180px;
+      width: 220px;
       height: auto;
       filter: grayscale(100%);
       transition: all 0.4s ease;
@@ -225,87 +250,132 @@
       transform: translateY(-5px);
     }
     
+    @keyframes scroll-partners {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    
     /* Testimonials Section */
     .testimonials {
       padding: 80px 20px;
       text-align: center;
       background: #F7E8FF;
-    }
-    
-    .marquee {
-      overflow: hidden;
-      white-space: nowrap;
       position: relative;
-      margin: 40px 0;
     }
     
-    .marquee + .marquee {
-      margin-top: 30px;
+    .testimonials-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+      height: auto;
+      padding: 0 20px;
     }
     
-    .marquee__group {
-      display: inline-block;
+    .testimonials-slider {
+      display: flex;
+      transition: transform 1s ease;
+      height: 100%;
+      padding-bottom: 30px;
     }
     
     .testimonial-box {
-      display: inline-block;
-      width: 280px;
-      min-height: 160px;
-      padding: 25px;
-      margin: 0 20px;
-      border-radius: 20px;
+      flex: 0 0 calc(100% - 40px);
+      min-height: 340px;
+      padding: 30px;
       background: #ffffff;
-      box-shadow: 0 8px 20px rgba(107, 13, 173, 0.1);
-      text-align: center;
-      vertical-align: top;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       position: relative;
-      z-index: 1;
+      margin: 0 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
     }
     
-    .testimonial-box .stars {
-      font-size: 1.5rem;
-      margin-bottom: 15px;
-      color: #FFD700;
+    .user-info {
+      display: flex;
+      align-items: center;
+      margin-bottom: 25px;
+      width: 100%;
     }
     
-    .testimonial-box .feedback {
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-bottom: 15px;
+    .user-img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #6A0DAD;
+      margin-right: 20px;
+    }
+    
+    .user-details {
+      text-align: left;
+    }
+    
+    .user-name {
+      font-size: 1.4rem;
+      font-weight: 700;
       color: #2B003E;
-      line-height: 1.5;
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
     }
     
-    .testimonial-box .author {
-      font-size: 0.95rem;
-      font-style: italic;
+    .user-meta {
+      font-size: 1rem;
       color: #6A0DAD;
-      font-weight: 500;
+      margin-top: 5px;
     }
     
-    @keyframes scroll-right {
-      from { transform: translateX(-50%); }
-      to { transform: translateX(0); }
+    .testimonial-feedback {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: #2B003E;
+      max-width: 800px;
+      margin-bottom: 20px;
+      font-style: italic;
     }
     
-    @keyframes scroll-left {
-      from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
+    .rating-container {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      background: #6A0DAD;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 600;
     }
     
-    .marquee--right .marquee__group {
-      animation: scroll-right 25s linear infinite;
+    .testimonial-nav {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 30px;
     }
     
-    .marquee--left .marquee__group {
-      animation: scroll-left 25s linear infinite;
+    .testimonial-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(107, 13, 173, 0.2);
+      border: none;
+      color: #6A0DAD;
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
-    /* Contact Section */
+    .testimonial-btn:hover {
+      background: rgba(107, 13, 173, 0.3);
+      transform: scale(1.1);
+    }
+    
+    /* Contact Section - Updated to match other sections */
     .contact-section {
       background: white;
       padding: 100px 20px;
@@ -313,7 +383,7 @@
     }
     
     .contact-container {
-      max-width: 800px;
+      max-width: 1200px;
       margin: 0 auto;
     }
     
@@ -322,16 +392,6 @@
       color: #6A0DAD;
       margin-bottom: 20px;
       font-weight: 700;
-    }
-    
-    .contact-subtext {
-      font-size: 1.25rem;
-      color: #2B003E;
-      margin-bottom: 60px;
-      line-height: 1.7;
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
     }
     
     .contact-form {
@@ -343,6 +403,8 @@
       padding: 40px;
       border-radius: 20px;
       box-shadow: 0 10px 30px rgba(107, 13, 173, 0.1);
+      max-width: 800px;
+      margin: 0 auto;
     }
     
     .form-group {
@@ -413,7 +475,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
     
-    /* Updated Footer - Matches Mood Tracker Page */
+    /* Updated Footer */
     .footer {
       background: linear-gradient(135deg, #2B003E, #1a0029);
       color: white;
@@ -532,6 +594,14 @@
       .hero-container {
         height: 450px;
       }
+      
+      .section-title {
+        font-size: 2.2rem;
+      }
+      
+      .section-subtitle {
+        font-size: 1.4rem;
+      }
     }
     
     @media (max-width: 768px) {
@@ -552,10 +622,6 @@
         font-size: 2.2rem;
       }
       
-      .contact-subtext {
-        font-size: 1.1rem;
-      }
-      
       .contact-form {
         padding: 25px;
       }
@@ -572,6 +638,25 @@
       .footer-links {
         gap: 20px;
       }
+      
+      .testimonial-box {
+        padding: 20px;
+        flex: 0 0 calc(100% - 20px);
+        margin: 0 10px;
+      }
+      
+      .user-img {
+        width: 70px;
+        height: 70px;
+      }
+      
+      .user-name {
+        font-size: 1.2rem;
+      }
+      
+      .testimonial-feedback {
+        font-size: 0.95rem;
+      }
     }
     
     @media (max-width: 480px) {
@@ -583,6 +668,33 @@
         flex-direction: column;
         gap: 15px;
       }
+      
+      .testimonials-container {
+        height: auto;
+      }
+      
+      .testimonial-box {
+        min-height: 380px;
+      }
+      
+      .user-info {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .user-img {
+        margin-right: 0;
+        margin-bottom: 15px;
+      }
+      
+      .user-details {
+        text-align: center;
+      }
+      
+      .rating-container {
+        top: 15px;
+        right: 15px;
+      }
     }
   </style>
 </head>
@@ -590,8 +702,11 @@
   <!-- Navigation -->
   <nav class="navbar">
     <div class="brand">
-      <h1>Healing Hut</h1>
-      <p>Healing is for everyone.</p>
+      <i class="fas fa-spa brand-icon"></i>
+      <div>
+        <h1>Healing Hut</h1>
+        <p>Healing is for everyone.</p>
+      </div>
     </div>
     <div class="nav-links">
       <a href="mood.html">Mood Tracker</a>
@@ -600,13 +715,14 @@
       <a href="#testimonials">Testimonials</a>
       <a href="#contact">Contact Us</a>
     </div>
-    <button class="cta" onclick="window.location.href='session.html'">Book a Therapy!</button>
+    <button class="cta" onclick="window.location.href='session.html'">Consult a Mentor!</button>
   </nav>
 
   <!-- Hero Section -->
   <section class="hero">
     <div class="hero-container">
-      <img src="HH1.png" alt="Mental Wellness Platform" class="hero-img" id="heroImg">
+      <img src="HH1.png" alt="Mental Wellness Platform" class="hero-img active">
+      <img src="HH2.png" alt="Mental Wellness Platform" class="hero-img">
       <button class="arrow left" id="prevBtn">&#8249;</button>
       <button class="arrow right" id="nextBtn">&#8250;</button>
     </div>
@@ -616,12 +732,22 @@
   <section class="partners" id="partners">
     <h2 class="section-title">Our Valued Partners</h2>
     <p class="section-subtitle">Building meaningful collaborations with organizations committed to wellness, innovation, and lasting impact.</p>
-    <div class="partner-logos">
-      <img src="Linkedin.png" alt="LinkedIn" class="partner-logo">
-      <img src="discord.png" alt="Discord" class="partner-logo">
-      <img src="reddit.png" alt="Reddit" class="partner-logo">
-      <img src="roblox.png" alt="Roblox" class="partner-logo">
-      <img src="canva.png" alt="Canva" class="partner-logo">
+    <div class="partners-container">
+      <div class="partner-track">
+        <div class="partner-logos">
+          <img src="Linkedin.png" alt="LinkedIn" class="partner-logo">
+          <img src="discord.png" alt="Discord" class="partner-logo">
+          <img src="reddit.png" alt="Reddit" class="partner-logo">
+          <img src="roblox.png" alt="Roblox" class="partner-logo">
+          <img src="canva.png" alt="Canva" class="partner-logo">
+          <!-- Duplicates for seamless loop -->
+          <img src="Linkedin.png" alt="LinkedIn" class="partner-logo">
+          <img src="discord.png" alt="Discord" class="partner-logo">
+          <img src="reddit.png" alt="Reddit" class="partner-logo">
+          <img src="roblox.png" alt="Roblox" class="partner-logo">
+          <img src="canva.png" alt="Canva" class="partner-logo">
+        </div>
+      </div>
     </div>
   </section>
 
@@ -630,126 +756,110 @@
     <h2 class="section-title">Trusted by the Community</h2>
     <p class="section-subtitle">Discover how Healing Hut is transforming lives through compassionate, accessible mental wellness support.</p>
 
-    <div class="marquee marquee--left">
-      <div class="marquee__group">
-        <!-- Row 1 testimonials -->
+    <div class="testimonials-container">
+      <div class="testimonials-slider" id="testimonialsSlider">
+        <!-- Testimonial 1 -->
         <div class="testimonial-box">
-          <div class="stars">⭐⭐⭐⭐⭐</div>
-          <div class="feedback">Mood tracker boosted emotional clarity.</div>
-          <div class="author">Aarya Patel</div>
+          <div class="rating-container">
+            Rating: 4.9/5.0
+          </div>
+          <div class="user-info">
+            <img src="1T.png" alt="Riya Mehra" class="user-img">
+            <div class="user-details">
+              <div class="user-name">Riya Mehra</div>
+              <div class="user-meta">Marketing Manager, 27</div>
+            </div>
+          </div>
+          <p class="testimonial-feedback">
+            "I was overwhelmed by stress and constant anxiety from work. Therapy always felt out of reach — until I found Healing Hut. Their affordable sessions gave me access to the support I desperately needed."
+          </p>
         </div>
+        
+        <!-- Testimonial 2 -->
         <div class="testimonial-box">
-          <div class="stars">⭐⭐⭐⭐</div>
-          <div class="feedback">Quiz helped understand emotions better.</div>
-          <div class="author">Rajesh Kumar</div>
+          <div class="rating-container">
+            Rating: 4.5/5.0
+          </div>
+          <div class="user-info">
+            <img src="2T.png" alt="Karan Bhatt" class="user-img">
+            <div class="user-details">
+              <div class="user-name">Karan Bhatt</div>
+              <div class="user-meta">Software Developer, 32</div>
+            </div>
+          </div>
+          <p class="testimonial-feedback">
+            "I didn't think I needed help until I hit emotional rock bottom. Healing Hut was the safe space I didn't know I needed. The free mental quiz made me realize I was dealing with more than just stress."
+          </p>
         </div>
+        
+        <!-- Testimonial 3 -->
         <div class="testimonial-box">
-          <div class="stars">⭐⭐⭐⭐⭐</div>
-          <div class="feedback">Affordable therapy changed my life.</div>
-          <div class="author">Priya Singh</div>
+          <div class="rating-container">
+            Rating: 4.7/5.0
+          </div>
+          <div class="user-info">
+            <img src="3T.png" alt="Ananya Deshpande" class="user-img">
+            <div class="user-details">
+              <div class="user-name">Ananya Deshpande</div>
+              <div class="user-meta">MBA Student, 24</div>
+            </div>
+          </div>
+          <p class="testimonial-feedback">
+            "Academic pressure and loneliness were affecting my mental health badly. I didn't have the budget for therapy until I found Healing Hut's affordable mentorship. The AI mood tracker felt like a friend checking in on me."
+          </p>
         </div>
+        
+        <!-- Testimonial 4 -->
         <div class="testimonial-box">
-          <div class="stars">⭐⭐⭐⭐</div>
-          <div class="feedback">Quality sessions at low cost.</div>
-          <div class="author">Vishal Sharma</div>
+          <div class="rating-container">
+            Rating: 4.0/5.0
+          </div>
+          <div class="user-info">
+            <img src="4T.png" alt="Aakash Jain" class="user-img">
+            <div class="user-details">
+              <div class="user-name">Aakash Jain</div>
+              <div class="user-meta">UI/UX Designer, 29</div>
+            </div>
+          </div>
+          <p class="testimonial-feedback">
+            "Anxiety started affecting my creativity and confidence. Healing Hut helped me reset. Booking a session was quick, and their mentorship approach felt safe and empowering."
+          </p>
         </div>
+        
+        <!-- Testimonial 5 -->
         <div class="testimonial-box">
-          <div class="stars">⭐⭐⭐⭐⭐</div>
-          <div class="feedback">Quiz results were spot on!</div>
-          <div class="author">Sunita Iyer</div>
-        </div>
-        <!-- Duplicate for seamless loop -->
-        <div class="testimonial-box">
-          <div class="stars">⭐⭐⭐⭐⭐</div>
-          <div class="feedback">Mood tracker boosted emotional clarity.</div>
-          <div class="author">Aarya Patel</div>
-        </div>
-        <div class="testimonial-box">
-          <div class="stars">⭐⭐⭐⭐</div>
-          <div class="feedback">Quiz helped understand emotions better.</div>
-          <div class="author">Rajesh Kumar</div>
-        </div>
-        <div class="testimonial-box">
-          <div class="stars">⭐⭐⭐⭐⭐</div>
-          <div class="feedback">Affordable therapy changed my life.</div>
-          <div class="author">Priya Singh</div>
-        </div>
-        <div class="testimonial-box">
-          <div class="stars">⭐⭐⭐⭐</div>
-          <div class="feedback">Quality sessions at low cost.</div>
-          <div class="author">Vishal Sharma</div>
-        </div>
-        <div class="testimonial-box">
-          <div class="stars">⭐⭐⭐⭐⭐</div>
-          <div class="feedback">Quiz results were spot on!</div>
-          <div class="author">Sunita Iyer</div>
+          <div class="rating-container">
+            Rating: 4.8/5.0
+          </div>
+          <div class="user-info">
+            <img src="5T.png" alt="Tanya Kapoor" class="user-img">
+            <div class="user-details">
+              <div class="user-name">Tanya Kapoor</div>
+              <div class="user-meta">Content Strategist, 35</div>
+            </div>
+          </div>
+          <p class="testimonial-feedback">
+            "Postpartum stress left me emotionally drained. Healing Hut's affordable sessions made it easier to seek help without guilt or fear. Their AI mood tracker and free mental quiz helped me understand myself better."
+          </p>
         </div>
       </div>
     </div>
-
-    <div class="marquee marquee--right">
-      <div class="marquee__group">
-        <!-- Row 2 testimonials -->
-        <div class="testimonial-box">
-          <div class="stars">⭐⭐⭐⭐⭐</div>
-          <div class="feedback">Life-changing emotional tracker!</div>
-          <div class="author">Geeta Desai</div>
-        </div>
-        <div class="testimonial-box">
-          <div class="stars">⭐⭐⭐⭐</div>
-          <div class="feedback">Quiz boosted self-awareness.</div>
-          <div class="author">Mohit Gupta</div>
-        </div>
-        <div class="testimonial-box">
-          <div class="stars">⭐⭐⭐⭐⭐</div>
-          <div class="feedback">Affordable, transformative therapy.</div>
-          <div class="author">Deepika Rao</div>
-        </div>
-        <div class="testimonial-box">
-          <div class="stars">⭐⭐⭐⭐</div>
-          <div class="feedback">Supportive, caring therapists.</div>
-          <div class="author">Arjun Patel</div>
-        </div>
-        <div class="testimonial-box">
-          <div class="stars">⭐⭐⭐⭐⭐</div>
-          <div class="feedback">Easy to use mood logs.</div>
-          <div class="author">Kavita Singh</div>
-        </div>
-        <!-- Duplicate for seamless loop -->
-        <div class="testimonial-box">
-          <div class="stars">⭐⭐⭐⭐⭐</div>
-          <div class="feedback">Life-changing emotional tracker!</div>
-          <div class="author">Geeta Desai</div>
-        </div>
-        <div class="testimonial-box">
-          <div class="stars">⭐⭐⭐⭐</div>
-          <div class="feedback">Quiz boosted self-awareness.</div>
-          <div class="author">Mohit Gupta</div>
-        </div>
-        <div class="testimonial-box">
-          <div class="stars">⭐⭐⭐⭐⭐</div>
-          <div class="feedback">Affordable, transformative therapy.</div>
-          <div class="author">Deepika Rao</div>
-        </div>
-        <div class="testimonial-box">
-          <div class="stars">⭐⭐⭐⭐</div>
-          <div class="feedback">Supportive, caring therapists.</div>
-          <div class="author">Arjun Patel</div>
-        </div>
-        <div class="testimonial-box">
-          <div class="stars">⭐⭐⭐⭐⭐</div>
-          <div class="feedback">Easy to use mood logs.</div>
-          <div class="author">Kavita Singh</div>
-        </div>
-      </div>
+    
+    <div class="testimonial-nav">
+      <button class="testimonial-btn" id="testimonialPrev">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button class="testimonial-btn" id="testimonialNext">
+        <i class="fas fa-chevron-right"></i>
+      </button>
     </div>
   </section>
 
-  <!-- Contact Section -->
+  <!-- Contact Section - Updated to match other sections -->
   <section class="contact-section" id="contact">
     <div class="contact-container">
       <h2 class="contact-heading">Let's Connect!</h2>
-      <p class="contact-subtext">Partner with Healing Hut to drive up to 70% higher productivity through science-backed mental wellness support.</p>
+      <p class="section-subtitle">Partner with Healing Hut to drive up to 70% higher productivity through science-backed mental wellness support.</p>
       
       <form class="contact-form" id="contactForm">
         <div class="form-group">
@@ -823,33 +933,97 @@
   </footer>
 
   <script>
-    // Image slider functionality
-    const images = [
-      "HH1.png",
-      "HH2.png",
-    ];
-    
+    // Hero Image Slider
+    const heroImages = document.querySelectorAll('.hero-img');
     let currentIndex = 0;
-    const heroImg = document.getElementById('heroImg');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
+    let autoSlideInterval;
     
-    function updateImage() {
-      heroImg.src = images[currentIndex];
+    function showSlide(index) {
+      heroImages.forEach(img => img.classList.remove('active'));
+      heroImages[index].classList.add('active');
+      currentIndex = index;
     }
     
+    function nextSlide() {
+      let nextIndex = (currentIndex + 1) % heroImages.length;
+      showSlide(nextIndex);
+    }
+    
+    function prevSlide() {
+      let prevIndex = (currentIndex - 1 + heroImages.length) % heroImages.length;
+      showSlide(prevIndex);
+    }
+    
+    function startAutoSlide() {
+      autoSlideInterval = setInterval(nextSlide, 5000);
+    }
+    
+    function stopAutoSlide() {
+      clearInterval(autoSlideInterval);
+    }
+    
+    // Initialize hero slider
+    showSlide(0);
+    startAutoSlide();
+    
+    // Event listeners for manual navigation
     prevBtn.addEventListener('click', () => {
-      currentIndex = (currentIndex - 1 + images.length) % images.length;
-      updateImage();
+      stopAutoSlide();
+      prevSlide();
+      startAutoSlide();
     });
     
     nextBtn.addEventListener('click', () => {
-      currentIndex = (currentIndex + 1) % images.length;
-      updateImage();
+      stopAutoSlide();
+      nextSlide();
+      startAutoSlide();
     });
     
-    // Initialize image slider
-    updateImage();
+    // Testimonials Slider
+    const testimonialsSlider = document.getElementById('testimonialsSlider');
+    const testimonialPrev = document.getElementById('testimonialPrev');
+    const testimonialNext = document.getElementById('testimonialNext');
+    const testimonials = document.querySelectorAll('.testimonial-box');
+    let testimonialIndex = 0;
+    let testimonialInterval;
+    
+    function showTestimonial(index) {
+      testimonialsSlider.style.transform = `translateX(-${index * 100}%)`;
+      testimonialIndex = index;
+    }
+    
+    function nextTestimonial() {
+      let nextIndex = (testimonialIndex + 1) % testimonials.length;
+      showTestimonial(nextIndex);
+    }
+    
+    function prevTestimonial() {
+      let prevIndex = (testimonialIndex - 1 + testimonials.length) % testimonials.length;
+      showTestimonial(prevIndex);
+    }
+    
+    function startTestimonialAutoSlide() {
+      testimonialInterval = setInterval(nextTestimonial, 10000);
+    }
+    
+    // Initialize testimonials slider
+    showTestimonial(0);
+    startTestimonialAutoSlide();
+    
+    // Event listeners for manual navigation
+    testimonialPrev.addEventListener('click', () => {
+      clearInterval(testimonialInterval);
+      prevTestimonial();
+      startTestimonialAutoSlide();
+    });
+    
+    testimonialNext.addEventListener('click', () => {
+      clearInterval(testimonialInterval);
+      nextTestimonial();
+      startTestimonialAutoSlide();
+    });
     
     // Contact form functionality
     const contactForm = document.getElementById('contactForm');
