@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="icon" type="image/png" href="favicon.png" />
   <title>Healing Hut - Mental Wellness Platform</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -24,9 +24,12 @@
       color: #2B003E;
       line-height: 1.6;
       overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
     
-    /* Navbar Styles */
+    /* Updated Navbar Styles (matches store.html) */
     .navbar {
       position: fixed;
       top: 20px;
@@ -49,6 +52,7 @@
       display: flex;
       align-items: center;
       gap: 15px;
+      cursor: pointer;
     }
     
     .brand-icon {
@@ -114,6 +118,8 @@
       cursor: pointer;
       transition: all 0.3s ease;
       font-size: 1rem;
+      text-decoration: none;
+      display: inline-block;
     }
     
     .cta:hover {
@@ -122,6 +128,62 @@
       box-shadow: 0 4px 15px rgba(107, 13, 173, 0.3);
     }
     
+    /* Mobile Menu (matches store.html) */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: #6A0DAD;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .mobile-menu.active {
+      display: flex;
+    }
+    
+    .mobile-menu .nav-links {
+      flex-direction: column;
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+    
+    .mobile-menu .nav-links a {
+      font-size: 1.3rem;
+    }
+    
+    .mobile-menu .cta {
+      padding: 15px 30px;
+      font-size: 1.2rem;
+    }
+    
+    .close-menu-btn {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      color: #6A0DAD;
+      cursor: pointer;
+    }
+
     /* Hero Section */
     .hero {
       margin-top: 120px;
@@ -483,6 +545,7 @@
       padding: 70px 20px 40px;
       text-align: center;
       border-radius: 0;
+      margin-top: auto;
     }
     
     .footer-content {
@@ -502,6 +565,7 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
+      cursor: pointer;
     }
     
     .footer-logo i {
@@ -563,15 +627,6 @@
     
     /* Responsive Design */
     @media (max-width: 1100px) {
-      .navbar {
-        width: 95%;
-        padding: 12px 20px;
-      }
-      
-      .nav-links {
-        gap: 20px;
-      }
-      
       .partner-logos {
         gap: 30px;
       }
@@ -582,20 +637,6 @@
     }
     
     @media (max-width: 900px) {
-      .navbar {
-        flex-direction: column;
-        gap: 15px;
-      }
-      
-      .nav-links {
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-      
-      .hero-container {
-        height: 450px;
-      }
-      
       .section-title {
         font-size: 2.2rem;
       }
@@ -603,9 +644,26 @@
       .section-subtitle {
         font-size: 1.4rem;
       }
+      
+      .hero-container {
+        height: 450px;
+      }
     }
     
     @media (max-width: 768px) {
+      /* Mobile navbar adjustments */
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .nav-links {
+        display: none;
+      }
+      
+      .navbar .cta {
+        display: none;
+      }
+      
       .hero-container {
         width: 95%;
         height: 400px;
@@ -700,24 +758,45 @@
   </style>
 </head>
 <body>
-  <!-- Navigation -->
+  <!-- Updated Navigation (matches store.html) -->
   <nav class="navbar">
-    <div class="brand">
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+      <i class="fas fa-bars"></i>
+    </button>
+    
+    <div class="brand" onclick="window.location.href='index.html'">
       <i class="fas fa-spa brand-icon"></i>
       <div>
         <h1>Healing Hut</h1>
         <p>Healing is for everyone.</p>
       </div>
     </div>
+    
     <div class="nav-links">
       <a href="mood.html">Mood Tracker</a>
       <a href="quiz.html">Mental Quiz</a>
-      <a href="#partners">Our Partners</a>
-      <a href="#testimonials">Testimonials</a>
-      <a href="#contact">Contact Us</a>
+      <a href="index.html#partners">Our Partners</a>
+      <a href="index.html#testimonials">Testimonials</a>
+      <a href="index.html#contact">Contact Us</a>
     </div>
-    <button class="cta" onclick="window.location.href='session.html'">Consult a Mentor!</button>
+    <a href="session.html" class="cta">Consult a Mentor!</a>
   </nav>
+  
+  <!-- Mobile Menu (matches store.html) -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="close-menu-btn" id="closeBtn">
+      <i class="fas fa-times"></i>
+    </button>
+    
+    <div class="nav-links">
+      <a href="mood.html">Mood Tracker</a>
+      <a href="quiz.html">Mental Quiz</a>
+      <a href="index.html#partners">Our Partners</a>
+      <a href="index.html#testimonials">Testimonials</a>
+      <a href="index.html#contact">Contact Us</a>
+    </div>
+    <a href="session.html" class="cta">Consult a Mentor!</a>
+  </div>
 
   <!-- Hero Section -->
   <section class="hero">
@@ -913,7 +992,7 @@
   <!-- Updated Footer -->
   <footer class="footer">
     <div class="footer-content">
-      <div class="footer-logo">
+      <div class="footer-logo" onclick="window.location.href='index.html'">
         <i class="fas fa-spa"></i>
         Healing Hut
       </div>
@@ -922,9 +1001,9 @@
       <div class="footer-links">
         <a href="mood.html">Mood Tracker</a>
         <a href="quiz.html">Mental Quiz</a>
-        <a href="#partners">Our Partners</a>
-        <a href="#testimonials">Testimonials</a>
-        <a href="#contact">Contact Us</a>
+        <a href="index.html#partners">Our Partners</a>
+        <a href="index.html#testimonials">Testimonials</a>
+        <a href="index.html#contact">Contact Us</a>
       </div>
       
       <div class="copyright">
@@ -934,6 +1013,31 @@
   </footer>
 
   <script>
+    // Mobile menu functionality (matches store.html)
+    function setupMobileMenu() {
+      const menuBtn = document.getElementById('mobileMenuBtn');
+      const closeBtn = document.getElementById('closeBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      
+      menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+      
+      closeBtn.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+      
+      // Close menu when clicking on links
+      mobileMenu.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.remove('active');
+          document.body.style.overflow = '';
+        });
+      });
+    }
+
     // Hero Image Slider
     const heroImages = document.querySelectorAll('.hero-img');
     let currentIndex = 0;
@@ -1067,6 +1171,27 @@
           });
         }
       });
+    });
+
+    // Initialize mobile menu
+    setupMobileMenu();
+    
+    // Make footer links work
+    document.querySelectorAll('.footer-links a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        // For anchor links, let them behave normally
+        if (this.getAttribute('href').startsWith('#')) {
+          return;
+        }
+        // For other links, prevent default and navigate
+        e.preventDefault();
+        window.location.href = this.getAttribute('href');
+      });
+    });
+    
+    // Make Healing Hut logo clickable in footer
+    document.querySelector('.footer-logo').addEventListener('click', function() {
+      window.location.href = 'index.html';
     });
   </script>
 </body>
