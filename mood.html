@@ -25,7 +25,8 @@
       display: flex;
       flex-direction: column;
     }
-  /* Navbar Styles */
+    
+    /* Navbar Styles (Updated to match index.html) */
     .navbar {
       position: fixed;
       top: 20px;
@@ -44,12 +45,23 @@
       box-shadow: 0 4px 20px rgba(107, 13, 173, 0.1);
     }
     
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      cursor: pointer;
+    }
+    
+    .brand-icon {
+      font-size: 1.8rem;
+      color: #6A0DAD;
+    }
+    
     .brand h1 {
       margin: 0;
       font-size: 1.8rem;
       color: #6A0DAD;
       font-weight: 700;
-      cursor: pointer;
     }
     
     .brand p {
@@ -111,67 +123,6 @@
       background: #5a4cbd;
       transform: translateY(-3px);
       box-shadow: 0 4px 15px rgba(107, 13, 173, 0.3);
-    }
-    
-    /* Mobile Menu Styles */
-    .mobile-menu-btn {
-      display: none;
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      color: #6A0DAD;
-      cursor: pointer;
-      padding: 5px;
-    }
-    
-    .mobile-menu-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(43, 0, 62, 0.9);
-      z-index: 999;
-      backdrop-filter: blur(5px);
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 30px;
-    }
-    
-    .mobile-menu-overlay.show {
-      display: flex;
-    }
-    
-    .mobile-menu-overlay a {
-      color: white;
-      text-decoration: none;
-      font-size: 1.5rem;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-    
-    .mobile-menu-overlay a:hover {
-      color: #e8d6ff;
-      transform: scale(1.05);
-    }
-    
-    .mobile-menu-overlay .cta {
-      margin-top: 20px;
-      font-size: 1.3rem;
-      padding: 15px 30px;
-    }
-    
-    .close-menu-btn {
-      position: absolute;
-      top: 30px;
-      right: 30px;
-      background: none;
-      border: none;
-      color: white;
-      font-size: 2rem;
-      cursor: pointer;
     }
     
     /* Mood Tracker Container */
@@ -891,31 +842,19 @@
       }
     }
     
- /* Responsive Design */
-    @media (max-width: 1100px) {
+    @media (max-width: 900px) {
       .navbar {
-        width: 95%;
-        padding: 12px 20px;
+        flex-direction: column;
+        gap: 15px;
       }
       
       .nav-links {
-        display: none;
-      }
-      
-      .mobile-menu-btn {
-        display: block;
-        order: -1; /* Moves to left side */
-        margin-right: auto;
+        flex-wrap: wrap;
+        justify-content: center;
       }
       
       .mood-header h1 {
         font-size: 2.5rem;
-      }
-    }
-    
-    @media (max-width: 768px) {
-      .mood-header h1 {
-        font-size: 2rem;
       }
       
       .powered-by {
@@ -952,9 +891,9 @@
       }
     }
     
-    @media (max-width: 480px) {
+    @media (max-width: 768px) {
       .mood-tracker-container {
-        margin-top: 160px;
+        margin-top: 180px; /* Adjusted for navbar height */
         padding: 0 15px;
       }
       
@@ -998,12 +937,18 @@
         margin-bottom: 10px;
       }
     }
+    
+    @media (max-width: 480px) {
+      .mood-tracker-container {
+        margin-top: 200px; /* Adjusted for navbar height on small screens */
+      }
+    }
   </style>
 </head>
 <body>
-  <!-- Navigation -->
+  <!-- Navigation (Updated to match index.html) -->
   <nav class="navbar">
-    <div class="brand">
+    <div class="brand" onclick="window.location.href='index.html'">
       <i class="fas fa-spa brand-icon"></i>
       <div>
         <h1>Healing Hut</h1>
@@ -1013,27 +958,12 @@
     <div class="nav-links">
       <a href="mood.html">Mood Tracker</a>
       <a href="quiz.html">Mental Quiz</a>
-      <a href="#partners">Our Partners</a>
-      <a href="#testimonials">Testimonials</a>
-      <a href="#contact">Contact Us</a>
+      <a href="index.html#partners">Our Partners</a>
+      <a href="index.html#testimonials">Testimonials</a>
+      <a href="index.html#contact">Contact Us</a>
     </div>
-    <button class="cta" onclick="window.location.href='session.html'">Consult a Mentor!</button>
+    <a href="session.html" class="cta">Consult a Mentor!</a>
   </nav>
-
-
-
-  <!-- Mobile Menu Overlay -->
-  <div class="mobile-menu-overlay" id="mobileMenuOverlay">
-    <button class="close-menu-btn" id="closeMenuBtn">
-      <i class="fas fa-times"></i>
-    </button>
-    <a href="mood.html">Mood Tracker</a>
-    <a href="quiz.html">Mental Quiz</a>
-    <a href="index.html#partners">Our Partners</a>
-    <a href="index.html#testimonials">Testimonials</a>
-    <a href="index.html#contact">Contact Us</a>
-    <a href="session.html" class="cta">Book a Therapy!</a>
-  </div>
 
   <!-- Mood Tracker Container -->
   <div class="mood-tracker-container">
@@ -1209,11 +1139,6 @@
       { min: 2, max: 2.9, label: "Angry", color: "#F44336" }
     ];
     
-// Smooth scrolling offset adjustment for fixed navbar
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-
     // Initialize date and calendar
     const today = new Date();
     let currentMonth = today.getMonth();
@@ -1231,28 +1156,6 @@
     const prevMonthBtn = document.getElementById('prevMonth');
     const nextMonthBtn = document.getElementById('nextMonth');
     const downloadReportBtn = document.getElementById('downloadReportBtn');
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const closeMenuBtn = document.getElementById('closeMenuBtn');
-    const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
-    
-    // Mobile menu toggle
-    mobileMenuBtn.addEventListener('click', () => {
-      mobileMenuOverlay.classList.add('show');
-      document.body.style.overflow = 'hidden';
-    });
-    
-    closeMenuBtn.addEventListener('click', () => {
-      mobileMenuOverlay.classList.remove('show');
-      document.body.style.overflow = '';
-    });
-    
-    // Close menu when clicking on a link
-    mobileMenuOverlay.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenuOverlay.classList.remove('show');
-        document.body.style.overflow = '';
-      });
-    });
     
     // Helper function to get mood icon
     function getMoodIcon(mood) {
