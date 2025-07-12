@@ -374,7 +374,7 @@
       box-shadow: 0 8px 15px rgba(107, 13, 173, 0.3);
     }
     
-    /* Therapists Section */
+    /* Therapists Section - UPDATED for 3 widgets per row */
     .therapists-section {
       max-width: 1200px;
       margin: 0 auto 80px;
@@ -391,14 +391,8 @@
     
     .therapists-container {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 30px;
-    }
-    
-    @media (max-width: 768px) {
-      .therapists-container {
-        grid-template-columns: 1fr;
-      }
     }
     
     .therapist-card {
@@ -672,6 +666,11 @@
         margin-bottom: 20px;
       }
       
+      /* Updated therapists grid for tablet */
+      .therapists-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
       /* Mobile navbar adjustments */
       .mobile-menu-btn {
         display: block;
@@ -686,13 +685,10 @@
       }
     }
     
-    @media (max-width: 480px) {
-      .booking-header h1 {
-        font-size: 1.8rem;
-      }
-      
-      .booking-header p {
-        font-size: 1rem;
+    @media (max-width: 600px) {
+      /* Single column for mobile */
+      .therapists-container {
+        grid-template-columns: 1fr;
       }
       
       .category-container {
@@ -707,6 +703,16 @@
       .footer-links {
         flex-direction: column;
         gap: 15px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .booking-header h1 {
+        font-size: 1.8rem;
+      }
+      
+      .booking-header p {
+        font-size: 1rem;
       }
     }
   </style>
