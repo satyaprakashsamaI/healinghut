@@ -20,9 +20,11 @@
       line-height: 1.6;
       overflow-x: hidden;
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
     
-    /* Navbar Styles - Consistent with Healing Hut */
+    /* Navbar Styles (Updated to match mood.html) */
     .navbar {
       position: fixed;
       top: 20px;
@@ -39,6 +41,18 @@
       justify-content: space-between;
       z-index: 1000;
       box-shadow: 0 4px 20px rgba(107, 13, 173, 0.1);
+    }
+    
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      cursor: pointer;
+    }
+    
+    .brand-icon {
+      font-size: 1.8rem;
+      color: #6A0DAD;
     }
     
     .brand h1 {
@@ -99,6 +113,8 @@
       cursor: pointer;
       transition: all 0.3s ease;
       font-size: 1rem;
+      text-decoration: none;
+      display: inline-block;
     }
     
     .cta:hover {
@@ -115,7 +131,6 @@
       color: #6A0DAD;
       font-size: 1.5rem;
       cursor: pointer;
-      margin-right: 15px;
     }
     
     .mobile-menu {
@@ -163,7 +178,7 @@
       color: #6A0DAD;
       cursor: pointer;
     }
-    
+
     /* Booking Page Header with Store Button */
     .booking-header {
       margin-top: 140px;
@@ -524,6 +539,7 @@
       padding: 70px 20px 40px;
       text-align: center;
       border-radius: 0;
+      margin-top: auto;
     }
     
     .footer-content {
@@ -657,21 +673,8 @@
       }
       
       /* Mobile navbar adjustments */
-      .navbar {
-        flex-direction: row;
-        justify-content: space-between;
-        padding: 15px 20px;
-      }
-      
-      .brand {
-        order: 2;
-        text-align: center;
-        flex: 1;
-      }
-      
       .mobile-menu-btn {
         display: block;
-        order: 1;
       }
       
       .nav-links {
@@ -709,15 +712,18 @@
   </style>
 </head>
 <body>
-  <!-- Consistent Navbar -->
+  <!-- Updated Navbar (matches mood.html) -->
   <nav class="navbar">
     <button class="mobile-menu-btn">
       <i class="fas fa-bars"></i>
     </button>
     
-    <div class="brand">
-      <h1>Healing Hut</h1>
-      <p>Healing is for everyone.</p>
+    <div class="brand" onclick="window.location.href='index.html'">
+      <i class="fas fa-spa brand-icon"></i>
+      <div>
+        <h1>Healing Hut</h1>
+        <p>Healing is for everyone.</p>
+      </div>
     </div>
     
     <div class="nav-links">
@@ -727,7 +733,7 @@
       <a href="index.html#testimonials">Testimonials</a>
       <a href="index.html#contact">Contact Us</a>
     </div>
-    <button class="cta" onclick="window.location.href='session.html'">Book a Therapy!</button>
+    <a href="session.html" class="cta">Consult a Mentor!</a>
   </nav>
   
   <!-- Mobile Menu -->
@@ -743,7 +749,7 @@
       <a href="index.html#testimonials">Testimonials</a>
       <a href="index.html#contact">Contact Us</a>
     </div>
-    <button class="cta" onclick="window.location.href='session.html'">Book a Therapy!</button>
+    <a href="session.html" class="cta">Consult a Mentor!</a>
   </div>
 
   <!-- Booking Page Header with Store Button -->
