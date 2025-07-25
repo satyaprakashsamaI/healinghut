@@ -931,34 +931,60 @@ color: #ffffff !important;
         right: 15px;
       }
     }
-@media (max-width: 767px) {
-  /* NEW: Fix hero banner image on mobile */
+@media (max-width: 768px) {
   .hero-container {
-    height: auto; /* Remove fixed height */
-    aspect-ratio: 16/9; /* Maintain aspect ratio */
+    height: auto !important;
+    min-height: unset !important;
+    aspect-ratio: unset !important;
+    padding-bottom: 56.25%;
+    position: relative;
   }
   
   .hero-img {
-    position: relative; /* Change from absolute to relative */
-    height: auto; /* Allow height to adjust */
-    object-fit: contain; /* Show full image without cropping */
-  }
-  
-  .hero {
-    margin-top: 100px; /* Slightly reduce top margin */
-    padding: 20px; /* Reduce padding for more space */
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    transform: none !important;
   }
 }
-@media (max-width: 767px) {
-  /* NEW: Hide hero arrows and shift hero section down on mobile */
+  .hero {
+    margin-top: 140px; /* Increased from 100px to create more space */
+    padding-top: 20px; /* Added to create additional spacing */
+  }
+}
+  
+  /* Hide arrows on mobile */
   .arrow {
-    display: none !important; /* Completely hide both arrows */
-  }
-  
-  .hero {
-    margin-top: 140px; /* Increased from 100px to push banner down */
+    display: none !important;
   }
 }
+@media (max-width: 768px) {
+  /* Hide HH2.png in mobile view */
+  .hero-img:not(:first-child) {
+    display: none;
+  }
+  
+  /* Hide slider arrows in mobile view */
+  .arrow {
+    display: none !important;
+  }
+  
+  /* Ensure the first image is always visible and properly positioned */
+  .hero-img:first-child {
+    opacity: 1 !important;
+    position: relative !important;
+  }
+  
+  /* Disable any slider animations */
+  .hero-img {
+    transition: none !important;
+  }
+}
+
+ 
   </style>
 </head>
 <body>
@@ -1251,53 +1277,74 @@ document.addEventListener('DOMContentLoaded', function() {
     link.addEventListener('click', toggleMenu);
   });
 });
-    // Hero Image Slider
-    const heroImages = document.querySelectorAll('.hero-img');
-    let currentIndex = 0;
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    let autoSlideInterval;
-    
-    function showSlide(index) {
-      heroImages.forEach(img => img.classList.remove('active'));
-      heroImages[index].classList.add('active');
-      currentIndex = index;
-    }
-    
-    function nextSlide() {
-      let nextIndex = (currentIndex + 1) % heroImages.length;
-      showSlide(nextIndex);
-    }
-    
-    function prevSlide() {
-      let prevIndex = (currentIndex - 1 + heroImages.length) % heroImages.length;
-      showSlide(prevIndex);
-    }
-    
-    function startAutoSlide() {
-      autoSlideInterval = setInterval(nextSlide, 5000);
-    }
-    
-    function stopAutoSlide() {
-      clearInterval(autoSlideInterval);
-    }
-    
-    // Initialize hero slider
-    showSlide(0);
+    // Hero Image Slider - Modified for mobile
+const heroImages = document.querySelectorAll('.hero-img');
+let currentIndex = 0;
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+let autoSlideInterval;
+
+// Check if mobile view (don't initialize slider if mobile)
+const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+if (!isMobile) {
+  function showSlide(index) {
+    heroImages.forEach(img => img.classList.remove('active'));
+    heroImages[index].classList.add('active');
+    currentIndex = index;
+  }
+  
+  function nextSlide() {
+    let nextIndex = (currentIndex + 1) % heroImages.length;
+    showSlide(nextIndex);
+  }
+  
+  function prevSlide() {
+    let prevIndex = (currentIndex - 1 + heroImages.length) % heroImages.length;
+    showSlide(prevIndex);
+  }
+  
+  function startAutoSlide() {
+    autoSlideInterval = setInterval(nextSlide, 5000);
+  }
+  
+  function stopAutoSlide() {
+    clearInterval(autoSlideInterval);
+  }
+  
+  // Initialize hero slider only if not mobile
+  showSlide(0);
+  startAutoSlide();
+  
+  // Event listeners for manual navigation
+  prevBtn.addEventListener('click', () => {
+    stopAutoSlide();
+    prevSlide();
     startAutoSlide();
-    
-    // Event listeners for manual navigation
-    prevBtn.addEventListener('click', () => {
-      stopAutoSlide();
-      prevSlide();
-      startAutoSlide();
-    });
-    
-    nextBtn.addEventListener('click', () => {
-      stopAutoSlide();
-      nextSlide();
-      startAutoSlide();
-    });
+  });
+  
+  nextBtn.addEventListener('click', () => {
+    stopAutoSlide();
+    nextSlide();
+    startAutoSlide();
+  });
+} else {
+  // For mobile, ensure only first image is visible
+  heroImages.forEach((img, index) => {
+    if (index === 0) {
+      img.classList.add('active');
+      img.style.opacity = '1';
+    } else {
+      img.style.display = 'none';
+    }
+  });
+  
+  // Hide arrows in mobile view
+  if (prevBtn && nextBtn) {
+    prevBtn.style.display = 'none';
+    nextBtn.style.display = 'none';
+  }
+}
     
     // Testimonials Slider
     const testimonialsSlider = document.getElementById('testimonialsSlider');
